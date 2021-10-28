@@ -1,0 +1,61 @@
+@charset "utf-8";
+
+/*
+font-weight:300; Light
+font-weight:400; Regular
+font-weight:500; Medium
+*/
+
+/*************** title : start ***************/
+.title { margin-bottom:10px; margin-top:20px; }
+.title_2nd { font-size:18px; font-weight:500;/*Medium*/ line-height:1; padding:0; margin:0; display:block; }
+.title_2nd::before { width:6px; height:6px; border-radius:50%; border:3px solid #2787d9; display:inline-block; content:''; margin-right:5px; position:relative; top:-1px; }
+
+.title_3nd { font-size:14px; font-weight:500;/*Medium*/ line-height:1; padding:0; margin:0; display:block; }
+.title_3nd::before { font-family:xeicon; content:"\e93f"; color:#ea494b; }
+/*************** title : end ***************/
+
+
+/*************** loading : start ***************/
+.loading { display:none; text-align:center; position:fixed; left:0; top:0; width:100%; height:100%; background:#000; opacity:0.9; z-index:20; }
+.loading > div { position:absolute; top:calc(50% - 120px); width:100%; }
+.loading i { color:#fff; font-size:100px; }
+.loading p { font-size:14px; color:#fff; margin-top:10px; }
+/*************** loading : end ***************/
+
+
+/*************** login - start ***************/
+.login_bg { background:#dee9ec; background:#f4edde; }
+.login { width:450px; height:600px; background:#fff; border-radius:20px; text-align:center; padding:50px 0;
+    box-shadow:5px 5px 10px rgba(0, 0, 0, 0.3); position:fixed; left:calc(50% - 225px); top:calc(50% - 300px); }
+.login .login_logo { width:161px; height:60px; display:block; color:transparent; margin:0 auto; text-indent:-99999px; background:url(../images/inc/logo_o.png) 0 0 no-repeat; }
+
+.login .login_header { margin-top:45px; color:#3a3a56; }
+.login .login_header h2 { font-size:26px; line-height:1; font-weight:500;/*Medium*/ margin-bottom:7px; letter-spacing:-1px; }
+.login .login_header .info { font-size:12px; line-height:1; letter-spacing:-0.5px }
+
+.login .login_body { width:260px; margin:0 auto; margin-top:20px; color:#3a3a56; font-size:14px; }
+.login .login_field li { margin-top:8px; position:relative; }
+.login .login_field li:first-child { margin-top:0; }
+.login .login_field label { display:none; }
+.login .login_field input { width:100%; height:40px; line-height:40px; border:1px solid #3a3a56; color:#3a3a56; padding:0 10px 0 50px; }
+.login .login_field input:focus { background:#efefff; }
+.login .login_field input::-ms-input-placeholder { color:#3a3a56; }
+.login .login_field input::-webkit-input-placeholder { color:#3a3a56; }
+.login .login_field input::-moz-placeholder { color:#3a3a56; }
+.login .login_field li::before { font-family:xeicon; position:absolute; top:0; left:16px; font-size:26px; line-height:40px; }
+.login .login_field .field_id::before { content: "\e9f3"; }
+.login .login_field .field_pw::before { content: "\e964"; }
+.login .login_field .field_num::before { content: "\e9d3"; }
+
+.login .login_save { display:flex; margin-top:10px; }
+.login .login_save input { margin-right:3px;}
+.login .login_save div { margin-left:20px; }
+.login .login_save div:first-child { margin-left:0; }
+
+.login .login_button { margin-top:20px; margin-top:20px; color:#fff;  }
+.login .login_button button { width:100%; height:40px; line-height:40px; font-size:16px; font-weight:500;/*Medium*/ margin-top:10px; transition:all 0.5s; }
+.login .login_button button:first-child { margin-top:0; }
+
+.login .login_footer { position:absolute; bottom:50px; text-align:center; width:100%; color:#9f9f9f; font-size:11px; letter-spacing:-0.3px; line-height:1 }
+/*************** login - end ***************/

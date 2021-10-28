@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.sy.pg.SYPG01_Mapper">
+
+ 	<!-- 메뉴코드 리스트 -->
+	<select id="getProgCdList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			   PROG.PROG_CD,
+			   PROG.PROG_NM,
+			   PROG.MENU_CD,
+			   SCD.COM_SNM AS MENU_NM,
+			   PROG.USE_YN,
+			   PROG.CALL_URL,
+			   PROG.SORT
+		FROM   LL_PROG_CODE PROG,
+			   LL_SCODE SCD
+		WHERE  PROG.MENU_CD = SCD.COM_SCD
+		AND    SCD.COM_LCD = 'ME000'
+
+		<if test="schProgNm!='' and schProgNm!=null">
+		AND    PROG.PROG_NM LIKE CONCAT('%',#{schProgNm},'%')
+		</if>
+		<if test="schMenuCd!='' and schMenuCd!=null">
+		AND    PROG.MENU_CD = #{schMenuCd}
+		</if>
+		ORDER BY MENU_NM ASC
+ 	</select>
+
+ 	<select id="dupCheckProgCd" parameterType="java.util.HashMap" resultType="boolean">
+ 		SELECT
+ 			   IF(COUNT(*)=0, 0, 1)
+ 		FROM   LL_PROG_CODE
+ 		WHERE  PROG_CD = #{progCd}
+ 	</select>
+
+ 	<!-- 프로그램코드 저장 -->
+ 	<insert id="insertProgCd" parameterType="java.util.HashMap" >
+        INSERT INTO LL_PROG_CODE (
+	        PROG_CD,
+			PROG_NM,
+			MENU_CD,
+			USE_YN,
+			CALL_URL,
+			SORT,
+			CRT_USER_ID,
+			CRT_DATE
+        ) VALUES (
+			#{progCd},
+		    #{progNm},
+		    #{menuCd},
+		    #{useYn},
+		    #{callUrl},
+		    #{sort},
+		    #{userId},
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+        )
+	</insert>
+
+	<!-- 프로그램코드 수정 -->
+	<update id="updateProgCd" parameterType="java.util.HashMap">
+		UPDATE LL_PROG_CODE
+		SET    PROG_CD = #{chProgCd},
+		   	   PROG_NM = #{progNm},
+		   	   MENU_CD = #{menuCd},
+		   	   USE_YN = #{useYn},
+		   	   CALL_URL = #{callUrl},
+		   	   SORT = #{sort},
+		   	   UPT_USER_ID = #{userId},
+		   	   UPT_DATE = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+	    WHERE  PROG_CD = #{progCd}
+	</update>
+
+	<!-- 해당 프로그램코드 사용자별 권한 수정 -->
+	<update id="updateAuthProgUser" parameterType="java.util.HashMap">
+		UPDATE LL_USER_AUTH
+		SET    PROG_CD = #{chProgCd},
+		   	   UPT_USER_ID = #{userId},
+		   	   UPT_DATE = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+	    WHERE  PROG_CD = #{progCd}
+	</update>
+
+	<!-- 해당 프로그램코드 권한코드별 권한 수정 -->
+	<update id="updateAuthProg" parameterType="java.util.HashMap">
+		UPDATE LL_AUTH_PROG
+		SET    PROG_CD = #{chProgCd},
+		   	   UPT_USER_ID = #{userId},
+		   	   UPT_DATE = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+	    WHERE  PROG_CD = #{progCd}
+	</update>
+
+	<!-- 프로그램코드 삭제 -->
+	<delete id="deleteProgCd" parameterType="java.util.HashMap">
+		DELETE FROM LL_PROG_CODE
+		WHERE PROG_CD = #{progCd}
+	</delete>
+
+	<!-- 해당 프로그램의 사용자별 권한 삭제 -->
+	<delete id="deleteProgAuthUser" parameterType="java.util.HashMap">
+		DELETE FROM LL_USER_AUTH
+		WHERE PROG_CD = #{progCd}
+	</delete>
+
+	<!-- 해당 프로그램의 권한코드별 권한 삭제 -->
+	<delete id="deleteProgAuth" parameterType="java.util.HashMap">
+		DELETE FROM LL_AUTH_PROG
+		WHERE PROG_CD = #{progCd}
+	</delete>
+</mapper>

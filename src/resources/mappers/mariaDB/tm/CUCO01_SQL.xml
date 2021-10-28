@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.cu.co.CUCO01_Mapper">
+	
+ 	<!-- 컨택 리스트 -->
+	<select id="getContactList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			CONTACT_SEQ
+			,CONTACT_NM
+			,IS_USE
+			,ATTR_LIST_SEQ
+			,BIGO
+			,CRT_DATE
+			,CRT_USER_ID
+			,UPT_DATE
+			,UPT_USER_ID
+			,JOB_STATE
+			,KIND_CD
+			,CUST_DEL_CD
+			,DEL_YN
+			,DEL_DATE
+		FROM LL_CONTACTINFO
+		WHERE 1=1
+		<if test="contactSeq != null and contactSeq != ''">
+			AND CONTACT_SEQ = #{contactSeq}
+		</if>
+ 	</select>	
+ 		
+ 	<!-- 컨택 리스트 저장 -->
+ 	<insert id="insertContactlist" parameterType="java.util.HashMap">
+        INSERT INTO LL_CONTACTINFO (
+	        CONTACT_NM
+			,IS_USE
+			,ATTR_LIST_SEQ
+			,BIGO
+			,JOB_STATE
+			,CRT_USER_ID
+			,CRT_DATE	        
+        ) VALUES (
+			#{contactNm},
+		    #{isUse},
+		    #{attrListCd},
+		    #{bigo},
+		    #{jobState},
+		    #{userId},
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+        )
+	</insert>
+	
+	<!-- 컨택 리스트 수정 -->
+ 	<update id="updateContactList" parameterType="java.util.HashMap">
+ 		UPDATE	LL_CONTACTINFO
+ 		SET		CONTACT_NM = #{contactNm},
+ 				IS_USE = #{isUse},
+ 				ATTR_LIST_SEQ = #{attrListCd},
+ 				BIGO = #{bigo},
+ 				UPT_USER_ID = #{userId},
+ 				UPT_DATE = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+ 		WHERE CONTACT_SEQ = #{contactSeq}
+ 	</update>
+ 	
+ 	<!-- 컨택 리스트 삭제 -->
+ 	<delete id="deleteContactList" parameterType="java.util.HashMap">
+ 		DELETE FROM LL_CONTACTINFO
+ 		WHERE CONTACT_SEQ = #{contactSeq}
+ 	</delete>
+ 	
+</mapper>

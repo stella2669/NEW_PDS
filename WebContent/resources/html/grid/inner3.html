@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">-->
+<link rel="stylesheet" href="../../css/import.css">
+<script src="../../js/libs/jquery-3.2.0.min.js"></script>
+<script src="../../js/libs/jquery-ui.js"></script>
+<script src="../../js/libs/jquery.jqGrid.min.js"></script>
+<script src="../../js/libs/design.js"></script><!-- 임시 스크립트 -->
+<title>title</title>
+</head>
+
+
+<body>
+
+	<!-- iframe : start -->
+
+	<!-- inner_contents : start -->
+	<div class="inner_contents">
+		<!-- search : start -->
+		<div class="search_A2">
+			<div class="sc_input">
+				<dl>
+					<dt>유형</dt>
+					<dd>
+						<select class="select_type01" title="유형 선택">
+							<option value="">전체</option>
+						</select>
+					</dd>
+				</dl>
+			</div>
+			<div class="button mr_10">
+				<button type="button" class="btn btn_third btn_size_s">
+					<i class="xi-search"></i>조회
+				</button>
+			</div>
+		</div>
+		<!-- search : end -->
+		<!-- row : start -->
+		<div class="row">
+			<!-- col : start -->
+			<div class="col_pd col_6 alt">
+				<!-- title : start -->
+				<div class="title">
+					<h2 class="title_2nd">캠페인 목록</h2>
+				</div>
+				<!-- title : end -->
+				<!-- table : start -->
+				<div class="board_A0_L a_c type_grid">
+					<table id="mainGrid"></table>
+
+					<div class='paging'>
+						<button type='button' class='btn btn_dark btn_size_xs btn_none btn_rad_5 mr_5' onclick=''>
+							<i class='xi-forward xi-rotate-180'></i><span class="replace_text">처음</span>
+						</button>
+						<button type='button' class='btn btn_dark btn_size_xs btn_none btn_rad_5' onclick='prev_inspListGrid();'>
+							<i class='xi-caret-right xi-rotate-180'></i><span class="replace_text">이전</span>
+						</button>
+						<div class='number'>
+							<span class='page'>
+								<b>페이지 :</b><span>1</span><span>0</span>
+							</span>
+							<span class='item'>
+								<b>보기 :</b><span>1 - 0</span><span>0</span>
+							</span>
+						</div>
+						<button type='button' class='btn btn_dark btn_size_xs btn_none btn_rad_5' onclick='next_inspListGrid();'>
+							<i class='xi-caret-right'></i><span class="replace_text">다음</span>
+						</button>
+						<button type='button' class='btn btn_dark btn_size_xs btn_none btn_rad_5 ml_5' onclick=''>
+							<i class='xi-forward'></i><span class="replace_text">마지막</span>
+						</button>
+					</div>
+				</div>
+				<!-- table : end -->
+			</div>
+			<!-- col : end -->
+
+			<!-- col : start -->
+			<div class="col_pd col_4 alt">
+				<!-- title : start -->
+				<div class="title">
+					<h2 class="title_2nd">상세정보</h2>
+				</div>
+				<!-- title : end -->
+				<!-- table : start -->
+				<div class="board_A0_L">
+					<table aria-describedby="table_summary2">
+						<caption id="table_summary2">상세정보</caption>
+						<colgroup>
+							<col style="width:20%">
+							<col style="width:30%">
+							<col style="width:20%">
+							<col style="width:30%">
+						</colgroup>
+						<tbody>
+							<tr class="bd_top">
+								<th scope="row">캠페인명</th>
+								<td colspan="3"><input type="text" class="input_type01 w_100p" title="캠페인명"></td>
+							</tr>
+							<tr>
+								<th scope="row">시작일자</th>
+								<td>
+									<div class="input_box">
+										<span class="date_pick">
+											<input type="text" class="date_cell input_type01 w_80" id="in_date12">
+											<label class="date_icon" for="in_date12"><i class="xi-calendar-check"></i><span class="replace_text">기간 선택</span></label>
+										</span>
+									</div>
+								</td>
+								<th scope="row">종료일자</th>
+								<td>
+									<div class="input_box">
+										<span class="date_pick">
+											<input type="text" class="date_cell input_type01 w_80" id="in_date13">
+											<label class="date_icon" for="in_date13"><i class="xi-calendar-check"></i><span class="replace_text">기간 선택</span></label>
+										</span>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">고객만족도</th>
+								<td colspan="3">
+									<select class="select_type01 w_100p" title="고객만족도 선택">
+										<option value="">1차 고객만족도 조사</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">마케팅유형</th>
+								<td colspan="3">
+									<select class="select_type01 w_100p" title="마케팅유형 선택">
+										<option value="">2020 8월 60대</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">설명</th>
+								<td colspan="3"><input type="text" class="input_type01 w_100p" title="설명"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- table : end -->
+				<!-- title : start -->
+				<div class="title">
+					<h2 class="title_2nd">고객 데이터 삭제 기준</h2>
+				</div>
+				<!-- title : end -->
+				<!-- table : start -->
+				<div class="board_A0_L a_c">
+					<table aria-describedby="table_summary3">
+						<caption id="table_summary3">고객 데이터 삭제 기준</caption>
+						<colgroup>
+							<col style="width:33.33333%">
+							<col style="width:33.33333%">
+							<col style="width:33.33333%">
+						</colgroup>
+						<thead>
+							<tr class="bd_top">
+								<th scope="col">캠페인종료시</th>
+								<th scope="col">종료 후 1개월 경과</th>
+								<th scope="col">5년 경과</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="checkbox" class="chk_type01" title="선택"></td>
+								<td><input type="checkbox" class="chk_type01" title="선택"></td>
+								<td><input type="checkbox" class="chk_type01" title="선택"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- table : end -->
+				<!-- title : start -->
+				<div class="title">
+					<h2 class="title_2nd">판매상품</h2>
+				</div>
+				<!-- title : end -->
+				<!-- table : start -->
+				<div class="board_A0_L a_c type_grid">
+					<table id="mainGrid2"></table>
+
+					<div class='paging'>
+						<button type='button' class='btn btn_dark btn_size_xs btn_none btn_rad_5 mr_5' onclick=''>
+							<i class='xi-forward xi-rotate-180'></i><span class="replace_text">처음</span>
+						</button>
+						<button type='button' class='btn btn_dark btn_size_xs btn_none btn_rad_5' onclick='prev_inspListGrid();'>
+							<i class='xi-caret-right xi-rotate-180'></i><span class="replace_text">이전</span>
+						</button>
+						<div class='number'>
+							<span class='page'>
+								<b>페이지 :</b><span>1</span><span>0</span>
+							</span>
+							<span class='item'>
+								<b>보기 :</b><span>1 - 0</span><span>0</span>
+							</span>
+						</div>
+						<button type='button' class='btn btn_dark btn_size_xs btn_none btn_rad_5' onclick='next_inspListGrid();'>
+							<i class='xi-caret-right'></i><span class="replace_text">다음</span>
+						</button>
+						<button type='button' class='btn btn_dark btn_size_xs btn_none btn_rad_5 ml_5' onclick=''>
+							<i class='xi-forward'></i><span class="replace_text">마지막</span>
+						</button>
+					</div>
+				</div>
+				<!-- table : end -->
+				<!-- button : start -->
+				<div class="button mt_10 a_r">
+					<button type="button" class="btn btn_secondary btn_size_n">
+						<i class="xi-file-add"></i>신규
+					</button>
+					<button type="button" class="btn btn_third btn_size_n">
+						<i class="xi-eraser"></i>수정
+					</button>
+					<button type="button" class="btn btn_primary btn_size_n">
+						<i class="xi-trash"></i>삭제
+					</button>
+				</div>
+				<!-- button : end -->
+			</div>
+			<!-- col : end -->
+		</div>
+		<!-- row : end -->
+	</div>
+	<!-- inner_contents : end -->
+
+	<!-- iframe : end -->
+
+<script>
+
+$(document).ready(function() {
+
+	var i, max, myData, grid =$("#mainGrid");
+
+	grid.jqGrid({
+		datatype:"local",
+
+		colNames:['번호', '캠페인명', '시작일자', '종료일자', '총건수', '배분건수', '미배분건수'],
+		colModel:[
+			{name:'id', index:'id', width:'400', align:'center' },
+			{name:'cname', index:'cname', width:'400', align:'center' },
+			{name:'strd', index:'strd', width:'400', align:'center' },
+			{name:'endd', index:'endd', width:'400', align:'center' },
+			{name:'tcnt', index:'tcnt', width:'400', align:'center' },
+			{name:'ucnt', index:'ucnt', width:'400', align:'center' },
+			{name:'ncnt', index:'ncnt', width:'400', align:'center' },
+		],
+		sortable:true,
+		height:"auto",
+		autowidth:true,
+		// multiselecte:true,
+
+		// shrinkTofit:false,
+		// rowNum :10,
+		// pager:"pager"
+	});
+
+	myData = [
+		{id:"1", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"2", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"1", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"2", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"1", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"2", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"1", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"2", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"1", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"2", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"1", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"2", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"1", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"2", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"1", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"2", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"1", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"2", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"1", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"2", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"1", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"2", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"1", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"2", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"1", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"2", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"1", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"2", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"1", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+		{id:"2", cname:"2020년 6월 꿈나무만기예정", strd:'2020-01-01', endd:'2020-01-01', tcnt:'1,000', ucnt:'1,000', ncnt:'51,000', },
+	]
+
+	for(i=0, max=myData.length;i<=max;i++){
+		grid.jqGrid("addRowData", i+1, myData[i]);
+	}
+
+	var j, max2, myData2, grid2 =$("#mainGrid2");
+
+	grid2.jqGrid({
+		datatype:"local",
+
+		colNames:["<input type='checkbox' class='chk_type01' title='선택'>", "상품코드", "상품명"],
+		colModel:[
+			{name:'ids', index:'ids', width:'400', align:'center' },
+			{name:'code', index:'code', width:'400', align:'center' },
+			{name:'prd', index:'prd', width:'400', align:'center' },
+		],
+		sortable:true,
+		height:"auto",
+		autowidth:true,
+		// multiselecte:true,
+
+		// shrinkTofit:false,
+		// rowNum :10,
+		// pager:"pager"
+	});
+
+	myData2 = [
+		{ids:"<input type='checkbox' class='chk_type01' title='선택'>", code:"61300", prd:'2020년 6월 꿈나무만기예정', },
+		{ids:"<input type='checkbox' class='chk_type01' title='선택'>", code:"61300", prd:'2020년 6월 꿈나무만기예정', },
+	]
+
+	for(j=0, max2=myData2.length;j<=max;j++){
+		grid2.jqGrid("addRowData", j+1, myData2[j]);
+	}
+});
+</script>
+
+
+</body>
+</html>

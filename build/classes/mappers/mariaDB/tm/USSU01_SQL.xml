@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.us.su.USSU01_Mapper">
+
+	<select id="getUserList1" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			A.SKILL_CD,
+			A.USER_ID,
+			A.SKILL_TYPE,
+			A.SKILL_NM,
+			U.AUTH_CD,
+			(SELECT COM_SNM FROM ll_scode WHERE COM_LCD='AU000' AND COM_SCD=U.AUTH_CD) AS AU_NM,
+			U.USER_NM
+		FROM (SELECT 
+					SU.SKILL_CD,
+					SU.USER_ID,
+					S.SKILL_TYPE,
+					S.SKILL_NM
+				FROM ll_SKILL_USER SU LEFT OUTER JOIN ll_skill S ON SU.SKILL_CD = S.SKILL_CD
+				WHERE S.USE_YN = 'Y') A 
+		LEFT OUTER JOIN ll_user U ON U.USER_ID = A.USER_ID
+		WHERE 1=1
+		<if test="schSkillType1!=null and schSkillType1!=''">
+			AND A.SKILL_TYPE = #{schSkillType1}
+		</if>
+		<if test="schSkill1!=null and schSkill1!=''">
+			AND A.SKILL_CD = #{schSkill1}
+		</if>
+	</select>
+	
+		<select id="getUserList2" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			A.SKILL_CD,
+			A.USER_ID,
+			A.SKILL_TYPE,
+			A.SKILL_NM,
+			U.AUTH_CD,
+			(SELECT COM_SNM FROM ll_scode WHERE COM_LCD='AU000' AND COM_SCD=U.AUTH_CD) AS AU_NM,
+			U.USER_NM
+		FROM (SELECT 
+					SU.SKILL_CD,
+					SU.USER_ID,
+					S.SKILL_TYPE,
+					S.SKILL_NM
+				FROM ll_SKILL_USER SU LEFT OUTER JOIN ll_skill S ON SU.SKILL_CD = S.SKILL_CD
+				WHERE S.USE_YN = 'Y') A 
+		LEFT OUTER JOIN ll_user U ON U.USER_ID = A.USER_ID
+		WHERE 1=1
+		<if test="schSkillType2!=null and schSkillType2!=''">
+			AND A.SKILL_TYPE = #{schSkillType2}
+		</if>
+		<if test="schSkill2!=null and schSkill2!=''">
+			AND A.SKILL_CD = #{schSkill2}
+		</if>
+	</select>
+	
+	<select id="getNotSkillUserList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			U.USER_ID,
+			U.USER_NM,
+			U.AUTH_CD,
+			(SELECT COM_SNM FROM ll_scode WHERE COM_LCD='AU000' AND COM_SCD=U.AUTH_CD) AS AU_NM,
+			U.USER_NM
+		FROM ll_user U LEFT OUTER JOIN ll_skill_user SU ON (U.USER_ID = SU.USER_ID)
+		WHERE SU.USER_ID IS NULL;
+	</select>
+	
+	<delete id="deleteUserList1" parameterType="java.util.HashMap">
+		DELETE FROM LL_SKILL_USER
+		WHERE SKILL_CD = #{skillCd1}
+	</delete>
+	
+	<delete id="deleteUserList2" parameterType="java.util.HashMap">
+		DELETE FROM LL_SKILL_USER
+		WHERE SKILL_CD = #{skillCd2}
+	</delete>
+	
+	<insert id="insertUserList1" parameterType="java.util.HashMap">
+		INSERT INTO LL_SKILL_USER (
+			SKILL_CD,
+			USER_ID,
+			CRT_DATE,
+			CRT_USER_ID
+		) VALUES (
+			#{skillCd1},
+			#{checkedUserId1},
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+			#{userId}
+		)
+	</insert>
+	
+	<insert id="insertUserList2" parameterType="java.util.HashMap">
+		INSERT INTO LL_SKILL_USER (
+			SKILL_CD,
+			USER_ID,
+			CRT_DATE,
+			CRT_USER_ID
+		) VALUES (
+			#{skillCd2},
+			#{checkedUserId2},
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+			#{userId}
+		)
+	</insert>
+
+	<select id="getSkillList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			SKILL_CD,
+			SKILL_NM
+		FROM LL_SKILL
+		WHERE USE_YN = 'Y'
+		<if test="schSkillType!=null and schSkillType!=''">
+			AND SKILL_TYPE = #{schSkillType}
+		</if>
+		ORDER BY SKILL_CD
+	</select>
+	
+	<select id="getSkillTypeList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT DISTINCT
+			SKILL_TYPE
+		FROM LL_SKILL
+		WHERE USE_YN = 'Y'
+		ORDER BY SKILL_TYPE
+	</select>
+</mapper>

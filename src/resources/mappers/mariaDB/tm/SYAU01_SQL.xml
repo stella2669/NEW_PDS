@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.sy.au.SYAU01_Mapper">
+	
+	<!-- 권한코드 리스트 -->
+	<select id="getAuthCdList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			   AUTH.AUTH_CD,
+			   AUTH.AUTH_NM,
+			   AUTH.USE_YN,
+			   AUTH.BIGO
+		FROM   LL_AUTH_CODE AUTH	
+		<if test="schAuthNm!='' and schAuthNm!=null">
+		WHERE    AUTH.AUTH_NM LIKE CONCAT('%',#{schAuthNm},'%')
+		</if>
+		ORDER BY AUTH_CD ASC	   
+ 	</select>	
+ 	
+ 	<select id="dupCheckAuthCd" parameterType="java.util.HashMap" resultType="boolean">
+ 		SELECT
+ 			   IF(COUNT(*)=0, 0, 1)
+ 		FROM   LL_AUTH_CODE
+ 		WHERE  AUTH_CD = #{authCd} 		
+ 	</select>
+ 	
+ 	<!-- 권한코드 저장 -->
+ 	<insert id="insertAuthCd" parameterType="java.util.HashMap" >
+        INSERT INTO LL_AUTH_CODE (
+	        AUTH_CD,
+			AUTH_NM,
+			USE_YN,
+			BIGO,
+			CRT_USER_ID,
+			CRT_DATE	        
+        ) VALUES (
+			#{authCd},
+		    #{authNm},
+		    #{useYn},
+		    #{note},
+		    #{userId},
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+        )
+	</insert>
+
+	<!-- 권한코드 수정 -->
+	<update id="updateAuthCd" parameterType="java.util.HashMap">
+		UPDATE LL_AUTH_CODE 
+		SET    AUTH_CD = #{chAuthCd},
+		   	   AUTH_NM = #{authNm},		
+		   	   USE_YN = #{useYn},
+		   	   BIGO = #{note},
+		   	   UPT_USER_ID = #{userId},	
+		   	   UPT_DATE = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')			
+	    WHERE  AUTH_CD = #{authCd}
+	</update>	
+
+	<!-- 권한코드 삭제 -->
+	<delete id="deleteAuthCd" parameterType="java.util.HashMap">
+		DELETE FROM LL_AUTH_CODE 	
+		WHERE AUTH_CD = #{authCd}
+	</delete> 					
+</mapper>

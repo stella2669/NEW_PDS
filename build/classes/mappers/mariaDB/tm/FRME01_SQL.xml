@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.fr.me.FRME01_Mapper">
+<!--
+    파일 : 메뉴화면 쿼리
+	설명 : 메뉴화면에서 사용하는 쿼리
+
+	수정일               수정자              수정내용
+	==========   =========   ================================
+	2021-01-19   ybLee         최초 생성
+-->
+	<select id="mainMenuList" resultType="camelCaseResultMap">
+	  	SELECT
+	  		  COM_SCD AS MENU_ID,
+	  		  COM_SNM AS MENU_NM
+		FROM  LL_SCODE
+		WHERE COM_LCD = 'ME000'
+		AND   USE_YN = 'Y'
+		ORDER BY SORT
+	</select>
+
+	<select id="mainSubMenuList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+	  	 SELECT
+                PGC.MENU_CD AS PARENT_ID,
+                AUTH.PROG_CD AS MENU_ID,
+                PGC.PROG_NM AS MENU_NM,
+                PGC.CALL_URL AS URL
+          FROM  LL_PROG_CODE PGC LEFT OUTER JOIN LL_USER_AUTH AUTH ON PGC.PROG_CD = AUTH.PROG_CD
+          WHERE PGC.USE_YN ='Y' AND AUTH.USER_ID = #{userId}
+          ORDER BY PGC.SORT
+	</select>
+
+	<select id="mainSubMyMenuList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+	  	 SELECT
+                PGC.MENU_CD AS PARENT_ID,
+                AUTH.PROG_CD AS MENU_ID,
+                PGC.PROG_NM AS MENU_NM,
+                PGC.CALL_URL AS URL
+          FROM  LL_PROG_CODE PGC LEFT OUTER JOIN LL_MYMENU AUTH ON PGC.PROG_CD = AUTH.PROG_CD
+          WHERE PGC.USE_YN ='Y' AND AUTH.USER_ID = #{userId}
+          ORDER BY PGC.SORT
+	</select>
+
+	<select id="getMyMenuList" parameterType="java.util.HashMap"  resultType="camelCaseResultMap">
+	 	SELECT
+			   A.PROG_CD,
+			   P.PROG_NM,
+			   P.MENU_CD,
+			   CASE WHEN M.USER_ID IS NOT NULL THEN 'Y' ELSE 'N' END AS AUTH_YN
+		FROM   LL_USER_AUTH A
+			   LEFT OUTER JOIN
+			   LL_MYMENU M
+			   ON A.PROG_CD = M.PROG_CD,
+			   LL_PROG_CODE P
+		WHERE  A.PROG_CD = P.PROG_CD
+		AND    P.USE_YN = 'Y'
+		AND    A.USER_ID  = #{userId}
+		GROUP BY A.PROG_CD
+		ORDER BY P.MENU_CD
+ 	</select>
+
+ 	<insert id="insertMyMenuList" parameterType="java.util.HashMap">
+ 		INSERT INTO LL_MYMENU (
+ 			USER_ID,
+ 			PROG_CD,
+ 			CRT_DATE,
+ 			CRT_EMP_NO
+ 		) VALUES (
+ 			#{userId},
+ 			#{progCd},
+ 			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+ 			#{userId}
+ 		)
+ 	</insert>
+
+ 	<delete id="deleteMyMenu" parameterType="java.util.HashMap">
+ 		DELETE FROM LL_MYMENU
+ 		WHERE  USER_ID = #{userId}
+ 	</delete>
+</mapper>

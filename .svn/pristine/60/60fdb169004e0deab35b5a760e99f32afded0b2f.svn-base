@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">-->
+<link rel="stylesheet" href="../../css/import.css">
+<script src="../../js/libs/jquery-3.2.0.min.js"></script>
+<script src="../../js/libs/jquery-ui.js"></script>
+<script src="../../js/libs/jquery.jqGrid.min.js"></script>
+<script src="../../js/libs/design.js"></script><!-- 임시 스크립트 -->
+<title>계약비교안내</title>
+</head>
+
+<body>
+
+<!-- popup : start -->
+<div class="popup_window">
+	<div class="popup_header">
+		<h1>계약비교안내</h1>
+		<button type="button" class="popup_close"><i class="xi-close"></i><span class="replace_text">팝업닫기</span></button>
+	</div>
+	<div class="popup_content">
+		<!-- popup_body : start -->
+		<div class="popup_body">
+			<!-- board : start -->
+			<div class="board_A0_L a_c type_grid" style="height:300px;">
+				<table id="mainGrid"></table>
+				<div class='paging'>
+					<button type='button' class='btn btn_dark btn_size_xs btn_none btn_rad_5 mr_5' onclick=''>
+						<i class='xi-forward xi-rotate-180'></i><span class="replace_text">처음</span>
+					</button>
+					<button type='button' class='btn btn_dark btn_size_xs btn_none btn_rad_5' onclick='prev_inspListGrid();'>
+						<i class='xi-caret-right xi-rotate-180'></i><span class="replace_text">이전</span>
+					</button>
+					<div class='number'>
+						<span class='page'>
+							<b>페이지 :</b><span>1</span><span>0</span>
+						</span>
+						<span class='item'>
+							<b>보기 :</b><span>1 - 0</span><span>0</span>
+						</span>
+					</div>
+					<button type='button' class='btn btn_dark btn_size_xs btn_none btn_rad_5' onclick='next_inspListGrid();'>
+						<i class='xi-caret-right'></i><span class="replace_text">다음</span>
+					</button>
+					<button type='button' class='btn btn_dark btn_size_xs btn_none btn_rad_5 ml_5' onclick=''>
+						<i class='xi-forward'></i><span class="replace_text">마지막</span>
+					</button>
+				</div>
+				<!-- grid -->
+				<!-- <table aria-describedby="table_summary">
+					<caption id="table_summary">상담유형별현황 목록</caption>
+					<colgroup>
+						<col span="25" style="width:auto">
+					</colgroup>
+					<thead>
+						<tr class="bd_top">
+							<th scope="col" rowspan="2">번호</th>
+							<th scope="col" rowspan="2">상품명</th>
+							<th scope="col" rowspan="2">증서번호</th>
+							<th scope="col" rowspan="2">계약일자</th>
+							<th scope="col" rowspan="2">계약자</th>
+							<th scope="col" rowspan="2">피보험자</th>
+							<th scope="col" rowspan="2">보험료</th>
+							<th scope="col" rowspan="2">보험기간</th>
+							<th scope="col" rowspan="2">납입기간</th>
+							<th scope="col" rowspan="2">납입주기</th>
+							<th scope="col" rowspan="2">가입금액</th>
+							<th scope="col" rowspan="2">예정이름</th>
+							<th scope="col" rowspan="2">적립이율</th>
+							<th scope="col" rowspan="2">해지환급금</th>
+							<th scope="col" colspan="2">사망</th>
+							<th scope="col" colspan="3">암</th>
+							<th scope="col" colspan="3">질병</th>
+							<th scope="col" colspan="3">재해</th>
+						</tr>
+						<tr>
+							<th scope="col">일반</th>
+							<th scope="col">재해</th>
+							<th scope="col">진단</th>
+							<th scope="col">수술</th>
+							<th scope="col">입원</th>
+							<th scope="col">수술</th>
+							<th scope="col">입원</th>
+							<th scope="col">입원치료</th>
+							<th scope="col">수술</th>
+							<th scope="col">입원</th>
+							<th scope="col">입원치료</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td colspan="25" class="a_c no_data">검색된 데이터가 없습니다.</td>
+						</tr>
+					</tbody>
+				</table> -->
+				<!-- //grid -->
+			</div>
+			<!-- board : end -->
+		</div>
+		<!-- popup_body : end -->
+		<!-- popup_footer : start -->
+		<div class="popup_footer">
+			<div class="button a_r">
+				<button type="button" class="btn btn_third btn_size_n popup_close">
+					<i class="xi-close"></i>닫기
+				</button>
+			</div>
+		</div>
+		<!-- popup_footer : end -->
+	</div>
+</div>
+<!-- popup : end -->
+
+<script>
+
+$(document).ready(function() {
+
+	var i, max, myData, grid =$("#mainGrid");
+
+	grid.jqGrid({
+		datatype:"local",
+
+		colNames:['번호', '상품명', '증서번호', '계약일자', '계약자', '피보험자', '보험료', '보험기간', '납입기간', '납입주기', '가입금액', '예정이름', '적립이율', '해지환급금', '사망', '암', '질병', '재해'],
+		colModel:[
+			{name:'id', index:'id', width:'50', align:'center' },
+			{name:'data1', index:'data1', width:'150', align:'center' },
+			{name:'data2', index:'data2', width:'100', align:'center' },
+			{name:'data3', index:'data3', width:'100', align:'center' },
+			{name:'data4', index:'data4', width:'100', align:'center' },
+			{name:'data5', index:'data5', width:'100', align:'center' },
+			{name:'data6', index:'data6', width:'100', align:'center' },
+			{name:'data7', index:'data7', width:'100', align:'center' },
+			{name:'data8', index:'data8', width:'100', align:'center' },
+			{name:'data9', index:'data9', width:'100', align:'center' },
+			{name:'data10', index:'data10', width:'100', align:'center' },
+			{name:'data11', index:'data11', width:'100', align:'center' },
+			{name:'data12', index:'data12', width:'100', align:'center' },
+			{name:'data13', index:'data13', width:'100', align:'center' },
+			{name:'data14', index:'data14', width:'100', align:'center' },
+			{name:'data15', index:'data15', width:'100', align:'center' },
+			{name:'data16', index:'data16', width:'100', align:'center' },
+			{name:'data17', index:'data17', width:'100', align:'center' },
+		],
+		sortable:true,
+		height:"auto",
+		// autowidth:true,
+		// multiselecte:true,
+
+		// shrinkTofit:false,
+		// rowNum :10,
+		// pager:"pager"
+	});
+
+	myData = [
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+	]
+
+	for(i=0, max=myData.length;i<=max;i++){
+		grid.jqGrid("addRowData", i+1, myData[i]);
+	}
+});
+</script>
+
+
+</body>
+</html>

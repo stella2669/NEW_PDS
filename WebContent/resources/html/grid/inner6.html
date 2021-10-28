@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">-->
+<link rel="stylesheet" href="../../css/import.css">
+<script src="../../js/libs/jquery-3.2.0.min.js"></script>
+<script src="../../js/libs/jquery-ui.js"></script>
+<script src="../../js/libs/jquery.jqGrid.min.js"></script>
+<script src="../../js/libs/design.js"></script><!-- 임시 스크립트 -->
+<title>title</title>
+</head>
+
+
+<body>
+
+	<!-- inner_contents : start -->
+	<div class="inner_contents have_subtab">
+		<!-- board : start -->
+		<div class="board_A0_L">
+			<table aria-describedby="table_summary">
+				<caption id="table_summary">간편 보험료 계산</caption>
+				<colgroup>
+					<col style="width:100px">
+					<col style="width:20%">
+					<col style="width:100px">
+					<col style="width:auto">
+				</colgroup>
+				<tbody>
+					<tr class="bd_top">
+						<th scope="row">보험종류</th>
+						<td colspan="3">
+							<div class="flex">
+								<span>
+									<select class="select_type01" title="보험종류 선택">
+										<option value="">보험종류 선택</option>
+										<option value="">보험2</option>
+									</select>
+								</span>
+								<span><button type="button" class="btn btn_third btn_size_xs btn_rad_5 ml_5"><i class="xi-search"></i>상품조회</button></span>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">피보험자</th>
+						<td>
+							<input type="text" class="input_type01 w_100" title="피보험자">
+						</td>
+						<th scope="row">실명번호</th>
+						<td>
+							<div class="flex">
+								<div class="input_box">
+									<input type="text" class="input_type01 w_100" title="실명번호 앞자리 입력">
+									<span class="hyphen">-</span>
+									<input type="text" class="input_type01 w_100" title="실명번호 뒷자리 입력">
+								</div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">기준일자</th>
+						<td>
+							<div class="input_box">
+								<span class="date_pick">
+									<input type="text" class="date_cell input_type01 w_80" id="in_date3">
+									<label class="date_icon" for="in_date3"><i class="xi-calendar-check"></i><span class="replace_text">기간 선택</span></label>
+								</span>
+							</div>
+						</td>
+						<th scope="row">납입주기</th>
+						<td>
+							<div class="flex">
+								<span>
+									<select class="select_type01" title="납입주기 선택" disabled>
+										<option value="">월납</option>
+										<option value="">선택</option>
+									</select>
+								</span>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">산모명</th>
+						<td>
+							<input type="text" class="input_type01 w_100" title="산모명">
+						</td>
+						<th scope="row">실명번호</th>
+						<td>
+							<div class="flex">
+								<div class="input_box">
+									<input type="text" class="input_type01 w_100" title="실명번호 앞자리 입력">
+									<span class="hyphen">-</span>
+									<input type="text" class="input_type01 w_100" title="실명번호 뒷자리 입력">
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- board : end -->
+		<!-- button : start -->
+		<div class="button mt_10 a_sb">
+			<div class="void">
+				<!-- exp : start -->
+				<p class="mtm_17"><span class="exp alt fs_12 single">주민등록번호를 모를 경우 생년월일(6자리)과 성별(1자리)만 입력하세요</span></p>
+				<!-- exp : end -->
+			</div>
+			<div class="void">
+				<button type="button" class="btn btn_secondary btn_size_n" id="calPrum">
+					<i class="xi-calculator"></i>보험료계산
+				</button>
+				<button type="button" class="btn btn_third btn_size_n">
+					<i class="xi-search"></i>가입한도조회
+				</button>
+				<button type="button" class="btn btn_third btn_size_n">
+					<i class="xi-eraser"></i>재입력
+				</button>
+			</div>
+		</div>
+		<!-- button : end -->
+		<!-- title : start -->
+		<div class="title">
+			<h2 class="title_2nd">보험조회목록</h2>
+		</div>
+		<!-- title : end -->
+		<!-- board : start -->
+		<div class="board_A0_L a_c type_grid">
+			<table aria-describedby="table_summary2">
+				<caption id="table_summary2">간편보험료계산</caption>
+				<colgroup>
+					<col span="6" style="width:auto">
+				</colgroup>
+				<thead>
+					<tr class="bd_top">
+						<th scope="col">상품코드</th>
+						<th scope="col">보험종류</th>
+						<th scope="col">가입금액(만원)</th>
+						<th scope="col">보험기간</th>
+						<th scope="col">납입기간</th>
+						<th scope="col">보험료(원)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>00000</td>
+						<td class="a_l">무배당 그린보너스저축보험(일반형)</td>
+						<td class="a_r">2,000</td>
+						<td>3년</td>
+						<td>전기납</td>
+						<td class="a_r">2,000</td>
+					</tr>
+					<tr class="total calc">
+						<th scope="row" colspan="5">합계보험료</th>
+						<td class="a_r fc_0">2,000</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- board : end -->
+		<!-- title : start -->
+		<div class="title alt">
+			<h2 class="title_2nd">담보별 가입한도 조회</h2>
+			<span class="info">
+				<b>[회원명 : 김기호]</b>
+				<span>(단위 : 원)</span>
+			</span>
+		</div>
+		<!-- title : end -->
+		<!-- table : start -->
+		<div class="board_A0_L a_c type_grid">
+			<table aria-describedby="table_summary">
+				<caption id="table_summary">피보험자가입한도</caption>
+				<thead>
+					<tr class="bd_top">
+						<th scope="col">순번</th>
+						<th scope="col">담보구분</th>
+						<th scope="col" class="high">(A)<br>가입한도</th>
+						<th scope="col" class="high">(B)<br>현재가입금액</th>
+						<th scope="col" class="high">(C)<br>추가가능금액<br>(A-B)</th>
+						<th scope="col" class="high">(D)<br>해당청약서발행<br>(예정)금액</th>
+						<th scope="col" class="high nw">결과<br>(C-D)</th>
+						<th scope="col" class="high">(E)<br>청약서발행금액<br>(누계)</th>
+						<th scope="col" class="high nw">청약서발행금액(누계)<br>반영후추가가능금액(C-E)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>1</td>
+						<td class="a_l">질병사망보험금</td>
+						<td class="a_r">300,000,000</td>
+						<td class="a_r">0</td>
+						<td class="a_r">300,000,000</td>
+						<td class="a_r">0</td>
+						<td>정상</td>
+						<td class="a_r">0</td>
+						<td class="a_r">300,000,000</td>
+					</tr>
+					<tr>
+						<td colspan="9" class="a_c no_data">검색된 데이터가 없습니다.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<!-- table : end -->
+
+		<!-- exp : start -->
+		<div class="exp_box a_l mt_10">
+			<p class="exp alt fs_12">
+				<span>
+					(E) 청약서발행금액(누계) : 청약서를 발행한 계약(해당 청약서 발행(예정) 금액 포함)중 미입금 계약<br />
+					(단, 청약서 발행일 +10일 이내(비영업일 포함))에 대한 담보별 금액
+				</span>
+			</p>
+			<p class="exp alt fs_12 mt_5"><span>3대질병이란: 암, 뇌출혈, 급성심근경색증</span></p>
+		</div>
+		<!-- exp : end -->
+	</div>
+	<!-- inner_contents : end -->
+
+
+</body>
+</html>

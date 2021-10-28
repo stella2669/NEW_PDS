@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">-->
+<link rel="stylesheet" href="../../css/import.css">
+<script src="../../js/libs/jquery-3.2.0.min.js"></script>
+<script src="../../js/libs/jquery-ui.js"></script>
+<script src="../../js/libs/jquery.jqGrid.min.js"></script>
+<script src="../../js/libs/design.js"></script><!-- 임시 스크립트 -->
+<title>grid_subtab</title>
+</head>
+
+<body class="frame">
+
+<!-- skip : start -->
+<!-- skip : end -->
+
+<!-- wrap : start -->
+<div id="wrap">
+
+	<!-- header : start -->
+	<!-- header : end -->
+
+	<!-- container : start -->
+	<div id="container">
+		<!-- soft_phone : start -->
+		<div class="soft_phone" style="height:70px"></div>
+		<!-- soft_phone : end -->
+		<!-- notice : start -->
+		<div class="notice">
+			<ul>
+				<li>
+					<i class="xi-volume-max"></i>
+					<a href="javascript:void(0)">
+						<strong class="fc_0">[긴급공지]</strong>
+						<span>코로나19로 인한 고객응대 지침사항을 준수하여 상담을 진행해주시기 바랍니다.</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<!-- notice : end -->
+
+		<!-- contents : start -->
+		<div id="contents">
+
+			<div id="tabs" class="tabs tab_main mt_10">
+				<ul class="main_tab_header">
+					<li class="fix"><a href="#fix-menu1">간편보험료계산</a></li>
+				</ul>
+				<!-- tab_body : start -->
+				<div id="fix-menu1" class="main_tab_body">
+
+
+
+
+
+					<!-- sub_tabs : start -->
+					<div id="sub_tabs" class="tabs tab_A0 alt">
+
+						<ul class="sub_tab_header">
+							<li><a href="#sub_tabs-1">샘플1</a></li>
+							<li><a href="#sub_tabs-2">샘플2</a></li>
+						</ul>
+
+						<!-- sub_tab_body : start -->
+						<div id="sub_tabs-1" class="sub_tab_body">
+							<iframe src="inner6.html" class="subframe"></iframe>
+						</div>
+						<!-- sub_tab_body : end -->
+
+						<!-- sub_tab_body : start -->
+						<div id="sub_tabs-2" class="sub_tab_body">
+							<iframe src="inner6_2.html" class="subframe"></iframe>
+						</div>
+						<!-- sub_tab_body : end -->
+
+					</div>
+					<!-- sub_tabs : end -->
+					<!-- 절취선 - 여기서부터 잘라요 : end -->
+
+
+					<script>
+						$("#sub_tabs").tabs();
+					</script>
+
+
+
+
+				</div>
+				<!-- tab_body : end -->
+			</div>
+		</div>
+		<!-- contents : end -->
+
+	</div>
+	<!-- container : end -->
+
+</div>
+<!-- wrap : end -->
+
+</body>
+</html>

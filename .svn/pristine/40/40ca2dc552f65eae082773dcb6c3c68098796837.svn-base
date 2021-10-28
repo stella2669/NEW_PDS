@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">-->
+<link rel="stylesheet" href="../../css/import.css">
+<script src="../../js/libs/jquery-3.2.0.min.js"></script>
+<script src="../../js/libs/jquery-ui.js"></script>
+<script src="../../js/libs/jquery.jqGrid.min.js"></script>
+<script src="../../js/libs/design.js"></script><!-- 임시 스크립트 -->
+<title>title</title>
+</head>
+<body>
+
+
+<!-- iframe : start -->
+
+<!-- inner_contents : start -->
+<div class="inner_contents">
+	<!-- search : start -->
+	<div class="search_A2">
+		<div class="sc_input">
+			<dl>
+				<dt>상담원명</dt>
+				<dd><input type="text" class="input_type01 w_60" title="상담원명"></dd>
+			</dl>
+		</div>
+		<div class="button mr_10">
+			<button type="button" class="btn btn_third btn_size_s">
+				<i class="xi-search"></i>조회
+			</button>
+		</div>
+	</div>
+	<!-- search : end -->
+	<!-- title : start -->
+	<div class="title">
+		<h2 class="title_2nd">청약이력 목록</h2>
+	</div>
+	<!-- title : end -->
+
+	<!-- table : start -->
+	<div class="board_A0_L a_c type_grid disable_paging">
+		<table id="mainGrid"></table>
+	</div>
+	<!-- table : end -->
+
+	<!-- button : start -->
+	<div class="button mt_10 a_r">
+		<button type="button" class="btn btn_secondary btn_size_n">
+			<i class="xi-angle-right-min"></i>상담메인
+		</button>
+	</div>
+	<!-- button : end -->
+</div>
+<!-- inner_contents : end -->
+
+<!-- iframe : end -->
+
+<script>
+$(document).ready(function() {
+	var i, max, myData, grid =$("#mainGrid");
+	grid.jqGrid({
+		datatype:"local",
+		colNames:['번호', '청약일자', '상담원', '계약자명', '계약자 주민번호', '피보험자명', '피보험자 주민번호', '상품명', '보험료', '청약상태', 'QA명', 'QA결과', '증서번호'],
+		colModel:[
+			{name:'id', index:'id', width:'400', align:'center' },
+			{name:'date', index:'date', width:'400', align:'center' },
+			{name:'name', index:'name', width:'400', align:'center' },
+			{name:'name2', index:'name2', width:'400', align:'center' },
+			{name:'resnum', index:'resnum', width:'400', align:'center' },
+			{name:'name3', index:'name3', width:'400', align:'center' },
+			{name:'resnum2', index:'resnum2', width:'400', align:'center' },
+			{name:'pdn', index:'pdn', width:'400', align:'center' },
+			{name:'ins', index:'ins', width:'400', align:'center' },
+			{name:'state', index:'state', width:'400', align:'center' },
+			{name:'qa', index:'qa', width:'400', align:'center' },
+			{name:'qa2', index:'qa2', width:'400', align:'center' },
+			{name:'certi', index:'certi', width:'400', align:'center' },
+		],
+		sortable:true,
+		height:"340",
+		autowidth:true,
+		// multiselecte:true,
+		// shrinkTofit:false,
+		// rowNum :10,
+		// pager:"pager"
+	});
+
+	myData = [
+		{id:"1", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111 500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"2", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"3", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"4", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"5", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"6", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"7", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"8", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"9", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"10", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"1", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"2", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"3", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"4", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"5", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"6", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"7", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"8", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"9", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"10", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"1", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"2", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"3", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"4", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"5", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"6", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"7", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"8", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"9", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+		{id:"10", date:"2020-01-01", name:'홍길동', name2:'홍길동2', resnum:'500101-1111111', name3:'홍길동3', resnum2:'500101-1111111', pdn:'보험',
+		ins:'10000', ins:'청약상태', qa:'감전유', qa2:'대기', certi:'0000000' },
+	]
+
+	for(i=0, max=myData.length;i<=max;i++){
+		grid.jqGrid("addRowData", i+1, myData[i]);
+	}
+});
+</script>
+</body>
+</html>

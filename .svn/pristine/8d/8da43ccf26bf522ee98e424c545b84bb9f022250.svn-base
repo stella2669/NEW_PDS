@@ -1,0 +1,32 @@
+# -  log file path  ###########################################
+log.app.path = /home/cust/app/data/log
+
+# - file path  #############################
+file.notice.upload = /home/cust/app/data/files/notice
+file.board.upload = /home/cust/app/data/files/board
+file.message.upload = /home/cust/app/data/files/message
+file.script.upload = /home/cust/app/data/files/script
+file.excel.upload = /home/cust/app/data/files/excel
+file.tempt.upload = /home/cust/app/data/files/tempt
+
+# - ECM APi information ####################
+ecm.ip = http://10.0.6.104
+ecm.port = 9000
+ecm.version = /api/v1/
+
+# - db type  ###############################
+tm.dbType=mariaDB
+tm.url=jdbc:mysql://58.229.240.73:3306/kb_pds
+tm.username=LLYNX
+tm.password=1017!@
+
+
+# - datasource DB connection #################
+db.driver.POSTGRES = org.postgresql.Driver
+db.driver.ORACLE = oracle.jdbc.driver.OracleDriver
+db.driver.MYSQL = com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+db.url.POSTGRES = jdbc:postgresql://
+db.url.ORACLE = jdbc:oracle:thin://
+db.url.MYSQL = jdbc:sqlserver://
+

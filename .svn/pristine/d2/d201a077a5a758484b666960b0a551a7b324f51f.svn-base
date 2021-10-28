@@ -1,0 +1,16 @@
+@charset "utf-8";
+
+/*****var*****/
+:root {
+    /*메인탭 내용 높이*/
+    --maintab_H:100%;
+    --mainframe_H:calc(var(--maintab_H) - 22px);
+
+    /*메인서브탭 내용 높이*/
+    --tmcAa_H:285px;
+    --tmcAb_H:226px;
+    --tmcB_H:550px;
+    --tmcC_H:175px;
+
+}
+/*****var*****/

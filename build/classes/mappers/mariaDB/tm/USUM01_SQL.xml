@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.us.um.USUM01_Mapper">
+
+	<select id="dupCheckUser" parameterType="java.util.HashMap"  resultType="boolean">
+		SELECT
+			   IF(COUNT(*)=0, 0, 1)
+		FROM   LL_USER
+		WHERE  USER_ID = #{userId}
+	</select>
+
+ 	<select id="getAgtList" parameterType="java.util.HashMap"  resultType="camelCaseResultMap">
+	 	SELECT
+			USER_ID
+			,USER_NM
+			,GROUP_CD
+			,(SELECT COM_SNM FROM LL_SCODE WHERE COM_LCD='GR000' AND COM_SCD=A.GROUP_CD) AS GR_NM
+			,AUTH_CD
+			,(SELECT AUTH_NM FROM LL_AUTH_CODE WHERE AUTH_CD =A.AUTH_CD) AS AU_NM
+			,RANK_CD
+			,(SELECT COM_SNM FROM LL_SCODE WHERE COM_LCD='WK000' AND COM_SCD=A.RANK_CD) AS RA_NM
+			,ST_CD
+			,(SELECT COM_SNM FROM LL_SCODE WHERE COM_LCD='ST000' AND COM_SCD=A.ST_CD) AS ST_NM
+			,USER_MAIL
+			,CRT_USER_ID
+			,CRT_DATE
+			,UPT_DATE
+			,UPT_USER_ID
+			,USER_ID AS USER_ID_KEY
+		FROM LL_USER A
+		<if test="schValue!=''">
+			<where>
+			<if test="schBy=='userId'">
+				AND    A.USER_ID = #{schValue}
+			</if>
+			<if test="schBy=='userNm'">
+				AND    A.USER_NM = #{schValue}
+			</if>
+			<if test="schBy=='authCd'">
+				AND    A.AUTH_CD = #{schValue}
+			</if>
+			<if test="schBy=='rankCd'">
+				AND    A.RANK_CD = #{schValue}
+			</if>
+			</where>
+ 		</if>
+ 		<if test="orderBy=='userId'">
+ 			<if test="sortBy=='asc'">
+ 				ORDER BY USER_ID ASC
+ 			</if>
+ 			<if test="sortBy=='desc'">
+ 				ORDER BY USER_ID DESC
+ 			</if>
+ 		</if>
+ 		<if test="orderBy=='userNm'">
+ 			<if test="sortBy=='asc'">
+ 				ORDER BY USER_NM ASC
+ 			</if>
+ 			<if test="sortBy=='desc'">
+ 				ORDER BY USER_NM DESC
+ 			</if>
+ 		</if>
+ 	</select>
+
+ 	<insert id="insertAgt01" parameterType="java.util.HashMap" >
+       INSERT INTO LL_USER (
+            USER_ID,
+            USER_NM,
+            PASSWORD,
+            RESET_YN,
+            GROUP_CD,
+            AUTH_CD,
+            RANK_CD,
+            ST_CD,
+            USER_MAIL,
+            CRT_DATE,
+            CRT_USER_ID
+        ) VALUES (
+			#{userId},
+			#{userNm},
+		    #{password},
+		    #{resetYn},
+		    #{groupCd},
+		    #{authCd},
+		    #{rankCd},
+		    #{stCd},
+		    #{userMail},
+		    DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'),
+		    #{crtUserId}
+        )
+	</insert>
+
+	<update id="updateAgt01" parameterType="java.util.HashMap">
+		UPDATE LL_USER
+		SET    USER_NM = #{userNm},
+               RESET_YN = #{resetYn},
+		   	   ST_CD = #{stCd},
+		   	   GROUP_CD = #{groupCd},
+		   	   AUTH_CD = #{authCd},
+		   	   RANK_CD = #{rankCd},
+		   	   ST_CD = #{stCd},
+		   	   USER_MAIL = #{userMail},
+		   	   UPT_USER_ID = #{crtUserId},
+		   	   UPT_DATE = DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+	    WHERE  USER_ID = #{userId}
+	</update>
+
+	<update id="changePawd" parameterType="java.util.HashMap">
+		UPDATE LL_USER
+		SET    PASSWORD = #{password},
+			   <if test="resetYn!=null and resetYn!=''">
+               RESET_YN = #{resetYn},
+			   </if>
+		   	   UPT_USER_ID = #{uptUserId},
+		   	   UPT_DATE = DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+	    WHERE  USER_ID = #{userId}
+
+	</update>
+
+	<!-- 사용자 삭제 -->
+	<delete id="deleteAgt01" parameterType="java.util.HashMap">
+		DELETE FROM LL_USER
+		WHERE USER_ID = #{userId}
+	</delete>
+
+	<!--  기본 권한별 프로그램 코드 가져오기 -->
+ 	<select id="getProgList" parameterType="java.util.HashMap"  resultType="camelCaseResultMap">
+ 		SELECT
+			   PROG_CD
+		FROM   LL_AUTH_PROG
+		WHERE  AUTH_CD = #{authCd}
+ 	</select>
+
+
+</mapper>

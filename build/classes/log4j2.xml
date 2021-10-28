@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="FATAL">
+    <Properties>
+        <Property name="logAppPath">${sys:log.app.path}</Property>
+        <Property name="logAppName">PDS_SYSTEM</Property>
+        <Property name="logSoftphoneEvent">softphoneEventLogAppender</Property>
+        <Property name="logLayout">%-5level  [%d{yyyy-MM-dd HH:mm:ss.SSS} / %t]  %c(%M:%L) - %m%n</Property>
+        <Property name="logLayoutSoftphone">[%d{yyyy-MM-dd HH:mm:ss.SSS}]   %m%n</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${logLayout}" />
+        </Console>
+
+        <RollingFile name="tmApp" fileName="${logAppPath}/${logAppName}.log"
+                     filePattern="${logAppPath}/${logAppName}-%d{yyyyMMdd}_%i.log">
+             <PatternLayout pattern="${logLayout}" />
+             <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB" />
+                <TimeBasedTriggeringPolicy modulate="true" interval="1" />
+             </Policies>
+             <DefaultRolloverStrategy max="20" fileIndex="min">
+                <Delete basePath="${logAppPath}" maxdepth="1">
+                    <IfFileName glob="${logAppName}-*.log" />
+                    <IfLastModified age="60d" />
+                </Delete>
+             </DefaultRolloverStrategy>
+        </RollingFile>
+
+         <RollingFile name="softphoneEventLogAppender" fileName="${logAppPath}/softphone.log"
+                     filePattern="${logAppPath}/softphone-%d{yyyyMMdd}_%i.log">
+             <PatternLayout pattern="${logLayoutSoftphone}" />
+             <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB" />
+                <TimeBasedTriggeringPolicy modulate="true" interval="1" />
+             </Policies>
+             <DefaultRolloverStrategy max="20" fileIndex="min">
+                <Delete basePath="${logAppPath}" maxdepth="1">
+                    <IfFileName glob="softphone-*.log" />
+                    <IfLastModified age="1d" />
+                </Delete>
+             </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="ERROR">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="tmApp" />
+        </Root>
+
+        <Logger level="INFO" name="com.llynx" additivity="true" />
+        <Logger level="ERROR" name="jdbc.sqlonly" additivity="true" />
+        <Logger level="WARN" name="org.directwebremoting.filter" additivity="true" />
+
+		<!--  소프트폰 서버 로그  -->
+        <Logger level="INFO" name="eventSoftphone" additivity="false">
+            <AppenderRef ref="softphoneEventLogAppender" />
+        </Logger>
+    </Loggers>
+</Configuration>

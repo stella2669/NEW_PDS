@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.cp.em.CPEM01_Mapper">
+	
+	<update id="campStateUpdate" parameterType="java.util.HashMap">
+		UPDATE LL_CAMP
+		SET    RUNNING_STATE = #{runningState},
+		   	   UPT_EMP_NO = #{userId},	
+		   	   UPT_DATE = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+		WHERE  CAMP_ID = #{campId}		
+	</update>
+					
+</mapper>

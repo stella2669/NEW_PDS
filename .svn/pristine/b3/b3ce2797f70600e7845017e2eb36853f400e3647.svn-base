@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.al.cc.ALCC01_Mapper">
+
+	<select id="getCampListByDate" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			  DATE_FORMAT(SYYYYMMDD, '%Y-%m-%d') AS SYYYYMMDD,
+			  SHOUR,
+			  CAMPAIGN_ID,
+			  CAMPAIGN_NAME,
+			  START_TIME,
+			  END_TIME
+		FROM  LL_CAMP_STATIC_02
+		<where>
+		<if test="schStrtDate!=null and schStrtDate!='' and schEndDate!=null and schEndDate!=''">
+		AND   SYYYYMMDD BETWEEN #{schStrtDate} AND #{schEndDate}
+		</if>
+		<if test="schStrtDate==null or schStrtDate=='' or schEndDate==null or schEndDate==''">
+		AND   SYYYYMMDD = DATE_FORMAT(NOW(), '%Y%m%d')
+		</if>
+		<if test="schCampNm!=null and schCampNm!=''">
+		AND   CAMPAIGN_NAME LIKE CONCAT('%', #{schCampNm}, '%')
+		</if>
+		</where>
+		<if test="schby!=null and schby!=''">
+			<choose>
+			<when test='schby=="DEFAULT"'>
+			GROUP BY CAMPAIGN_ID
+			</when>
+			<when test='schby=="DATE"'>
+			GROUP BY CAMPAIGN_ID, SYYYYMMDD
+			</when>
+			<when test='schby=="HOUR"'>
+			GROUP BY CAMPAIGN_ID, SYYYYMMDD, SHOUR
+			</when>
+			</choose>
+		</if>
+		<if test='schby==null or schby==""'>
+		GROUP BY CAMPAIGN_ID
+		</if>
+	</select>
+
+	<select id="getCampCompCodeStaticsData" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			  DATE_FORMAT(SYYYYMMDD, '%Y-%m-%d') AS SYYYYMMDD,
+			  SHOUR,
+			  CAMPAIGN_ID,
+			  JOB_ID,
+			  CAMPAIGN_NAME,
+			  COMPLETION_CODE_ID,
+			  COM_CODE,
+			  LAST_JOB_START_TIME,
+			  COM_TOTAL,
+			  COM_COUNT
+		FROM  LL_CAMP_STATIC_02
+		<where>
+		<if test="schStrtDate!=null and schStrtDate!='' and schEndDate!=null and schEndDate!=''">
+		AND   SYYYYMMDD BETWEEN #{schStrtDate} AND #{schEndDate}
+		</if>
+		<if test="schStrtDate==null or schStrtDate=='' or schEndDate==null or schEndDate==''">
+		AND   SYYYYMMDD = DATE_FORMAT(NOW(), '%Y%m%d')
+		</if>
+		<if test="schCampNm!=null and schCampNm!=''">
+		AND   CAMPAIGN_NAME LIKE CONCAT('%', #{schCampNm}, '%')
+		</if>
+		</where>
+	</select>
+
+	<insert id="insertCampCompCodeStaticsData" parameterType="java.util.HashMap">
+		INSERT IGNORE INTO LL_CAMP_STATIC_02 (
+			SYYYYMMDD,
+			SHOUR,
+			CAMPAIGN_ID,
+			JOB_ID,
+			CAMPAIGN_NAME,
+			START_TIME,
+			END_TIME,
+			COMPLETION_CODE_ID,
+			COM_CODE,
+			LAST_JOB_START_TIME,
+			COM_TOTAL,
+			COM_COUNT
+		) VALUES (
+			#{syyyymmdd},
+			#{shour},
+			#{campaignId},
+			#{jobId},
+			#{campaignName},
+			#{startTime},
+			#{endTime},
+			#{completionCodeId},
+			#{comCode},
+			#{lastJobStartTime},
+			#{comTotal},
+			#{comCount}
+		) ON DUPLICATE KEY UPDATE
+			CAMPAIGN_NAME = #{campaignName},
+			START_TIME = #{startTime},
+			END_TIME = #{endTime},
+			COMPLETION_CODE_ID = #{completionCodeId},
+			COM_CODE = #{comCode},
+			LAST_JOB_START_TIME = #{lastJobStartTime},
+			COM_TOTAL = #{comTotal},
+			COM_COUNT = #{comCount}
+	</insert>
+</mapper>

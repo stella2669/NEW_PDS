@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width">-->
+<link rel="stylesheet" href="../../css/import.css">
+<script src="../../js/libs/jquery-3.2.0.min.js"></script>
+<script src="../../js/libs/jquery-ui.js"></script>
+<script src="../../js/libs/jquery.jqGrid.min.js"></script>
+<script src="../../js/libs/design.js"></script><!-- 임시 스크립트 -->
+<title>title</title>
+</head>
+
+
+<body>
+
+	<!-- iframe : start -->
+	<div class="low_type_main">
+		<!-- search : start -->
+		<div class="search_A2">
+			<div class="sc_input">
+				<dl>
+					<dt>고객명</dt>
+					<dd><input type="text" class="input_type01 w_60" title="고객명"></dd>
+				</dl>
+				<dl>
+					<dt>주민번호</dt>
+					<dd><input type="text" class="input_type01 w_120" title="주민번호"></dd>
+				</dl>
+				<dl>
+					<dt>계약관계</dt>
+					<dd>
+						<select class="select_type01" title="계약관계 선택">
+							<option value="">계약자=피보험자(01)</option>
+							<option value="">계약자(30)</option>
+							<option value="">주피보험자(31)</option>
+							<option value="">종피보험자1(32)</option>
+							<option value="">종피보험자2(33)</option>
+							<option value="">만기(생존)수익자(41)</option>
+							<option value="">입원(장애)수익자(42)</option>
+							<option value="">사망1급수익자(43)</option>
+						</select>
+					</dd>
+				</dl>
+				<dl>
+					<dt>상태</dt>
+					<dd>
+						<select class="select_type01" title="상태 선택">
+							<option value="">전체</option>
+							<option value="">정상</option>
+							<option value="">실효</option>
+							<option value="">시효완성</option>
+							<option value="">소멸</option>
+							<option value="">지급대기</option>
+							<option value="">실효예정</option>
+						</select>
+					</dd>
+				</dl>
+			</div>
+			<div class="button mr_10">
+				<button type="button" class="btn btn_third btn_size_s">
+					<i class="xi-search"></i>조회
+				</button>
+			</div>
+		</div>
+		<!-- search : end -->
+		<!-- table : start -->
+		<div class="board_A0_L a_c type_grid_main mt_10 h_200 width_over">
+			<table id="mainGrid"></table>
+			<div class='paging'>
+				<button type='button' class='btn btn_dark btn_size_xs btn_none btn_rad_5 mr_5' onclick=''>
+					<i class='xi-forward xi-rotate-180'></i><span class="replace_text">처음</span>
+				</button>
+				<button type='button' class='btn btn_dark btn_size_xs btn_none btn_rad_5' onclick='prev_inspListGrid();'>
+					<i class='xi-caret-right xi-rotate-180'></i><span class="replace_text">이전</span>
+				</button>
+				<div class='number'>
+					<span class='page'>
+						<b>페이지 :</b><span>1</span><span>0</span>
+					</span>
+					<span class='item'>
+						<b>보기 :</b><span>1 - 0</span><span>0</span>
+					</span>
+				</div>
+				<button type='button' class='btn btn_dark btn_size_xs btn_none btn_rad_5' onclick='next_inspListGrid();'>
+					<i class='xi-caret-right'></i><span class="replace_text">다음</span>
+				</button>
+				<button type='button' class='btn btn_dark btn_size_xs btn_none btn_rad_5 ml_5' onclick=''>
+					<i class='xi-forward'></i><span class="replace_text">마지막</span>
+				</button>
+			</div>
+		</div>
+		<!-- table : end -->
+		<!-- button : start -->
+		<div class="button a_r mt_10">
+			<button type="button" class="btn btn_secondary btn_size_s">
+				<i class="xi-angle-right-min"></i>계약상세정보
+			</button>
+			<button type="button" class="btn btn_secondary btn_size_s">
+				<i class="xi-search"></i>계좌번호조회
+			</button>
+		</div>
+		<!-- button : end -->
+		<!-- table : start -->
+		<div class="board_A0_L a_c type_grid type_grid_main disable_paging mt_10 h_200">
+			<table id="mainGrid2"></table>
+		</div>
+		<!-- table : end -->
+		<!-- button : start -->
+		<div class="button a_r mt_10">
+			<button type="button" class="btn btn_secondary btn_size_s">
+				<i class="xi-check"></i>계좌번호적용
+			</button>
+		</div>
+		<!-- button : end -->
+	</div>
+	<!-- iframe : end -->
+
+<script>
+
+$(document).ready(function() {
+
+	var i, max, myData, grid =$("#mainGrid");
+
+	grid.jqGrid({
+		datatype:"local",
+
+		colNames:['번호', '증서번호', '상품명', '원부상태', '계약일자', '계약자', '피보험자', '주보험금', '1회보험료', '최종납월', '완납여부', '모집자', '유지국', '대출', '이율'],
+		colModel:[
+			{name:'id', index:'id', width:'400', align:'center' },
+			{name:'data1', index:'data1', width:'400', align:'center' },
+			{name:'data2', index:'data2', width:'400', align:'center' },
+			{name:'data3', index:'data3', width:'400', align:'center' },
+			{name:'data4', index:'data4', width:'400', align:'center' },
+			{name:'data5', index:'data5', width:'400', align:'center' },
+			{name:'data6', index:'data6', width:'400', align:'center' },
+			{name:'data7', index:'data7', width:'400', align:'center' },
+			{name:'data8', index:'data8', width:'400', align:'center' },
+			{name:'data9', index:'data9', width:'400', align:'center' },
+			{name:'data10', index:'data10', width:'400', align:'center' },
+			{name:'data11', index:'data11', width:'400', align:'center' },
+			{name:'data12', index:'data12', width:'400', align:'center' },
+			{name:'data13', index:'data13', width:'400', align:'center' },
+			{name:'data14', index:'data14', width:'400', align:'center' },
+		],
+		sortable:true,
+		height:"auto",
+		// autowidth:true,
+		// multiselecte:true,
+
+		// shrinkTofit:false,
+		// rowNum :10,
+		// pager:"pager"
+	});
+
+	myData = [
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+		{id:"1", data1:"2020년 6월 꿈나무만기예정", data2:'2020-01-01', data3:'2020-01-01', data4:'1,000', data5:'1,000', data6:'51,000', data7:'51,000', data8:'51,000', data9:'51,000', data10:'51,000', data11:'51,000', data12:'51,000', data13:'51,000', data14:'51,000', },
+	]
+
+	for(i=0, max=myData.length;i<=max;i++){
+		grid.jqGrid("addRowData", i+1, myData[i]);
+	}
+
+	var j, max2, myData2, grid2 =$("#mainGrid2");
+
+	grid2.jqGrid({
+		datatype:"local",
+
+		colNames:["예금주", "금융기관명", "계좌번호", "이체일", "최종이체청구일"],
+		colModel:[
+			{name:'id', index:'id', width:'100', align:'center' },
+			{name:'data1', index:'data1', width:'100', align:'center' },
+			{name:'data2', index:'data2', width:'100', align:'center' },
+			{name:'data3', index:'data3', width:'100', align:'center' },
+			{name:'data4', index:'data4', width:'100', align:'center' },
+		],
+		sortable:true,
+		height:"auto",
+		autowidth:true,
+		// multiselecte:true,
+
+		// shrinkTofit:false,
+		// rowNum :10,
+		// pager:"pager"
+	});
+
+	myData2 = [
+		{id:"1", data1:"61300", data2:'2020년 6월 꿈나무만기예정', data3:"61300", data4:"61300", },
+		{id:"1", data1:"61300", data2:'2020년 6월 꿈나무만기예정', data3:"61300", data4:"61300", },
+		{id:"1", data1:"61300", data2:'2020년 6월 꿈나무만기예정', data3:"61300", data4:"61300", },
+		{id:"1", data1:"61300", data2:'2020년 6월 꿈나무만기예정', data3:"61300", data4:"61300", },
+		{id:"1", data1:"61300", data2:'2020년 6월 꿈나무만기예정', data3:"61300", data4:"61300", },
+	]
+
+	for(j=0, max2=myData2.length;j<=max;j++){
+		grid2.jqGrid("addRowData", j+1, myData2[j]);
+	}
+});
+</script>
+
+
+</body>
+</html>

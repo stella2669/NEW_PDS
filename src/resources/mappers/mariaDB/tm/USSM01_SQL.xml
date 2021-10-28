@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.us.sm.USSM01_Mapper">
+
+ 	<!-- 스킬 리스트 -->
+	<select id="getSkillList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			   SKILL_CD,
+			   SKILL_NM,
+			   SKILL_TYPE,
+			   (SELECT COM_SNM FROM LL_SCODE SCD WHERE COM_LCD = 'SK000' AND COM_SCD = SKILL.SKILL_TYPE AND SCD.USE_YN='Y') AS SKILL_TYPE_NM,
+			   SKILL.USE_YN,
+			   BIGO
+		FROM   LL_SKILL SKILL
+		<where>
+		<if test="schSkillNm!='' and schSkillNm!=null">
+		AND    SKILL_NM LIKE CONCAT('%',#{schSkillNm},'%')
+		</if>
+		<if test="schSkillType!='' and schSkillType!=null">
+		AND    SKILL_TYPE = #{schSkillType}
+		</if>
+		<if test="schUseYn!='' and schUseYn!=null">
+		AND    SKILL.USE_YN = #{schUseYn}
+		</if>
+		</where>
+		ORDER BY SKILL_CD ASC	   
+ 	</select>
+ 	
+ 	<select id="dupCheckSkill" parameterType="java.util.HashMap" resultType="boolean">
+ 		SELECT 
+ 			   IF(COUNT(*)=0, 0, 1)
+ 		FROM   LL_SKILL
+ 		WHERE  SKILL_CD = #{skillCd}
+ 	</select>
+ 	
+ 	<!-- 스킬 저장 -->
+ 	<insert id="insertSkill" parameterType="java.util.HashMap">
+        INSERT INTO LL_SKILL (
+	        SKILL_CD,
+			SKILL_NM,
+			SKILL_TYPE,
+			USE_YN,
+			BIGO,
+			CRT_USER_ID,
+			CRT_DATE	        
+        ) VALUES (
+			#{skillCd},
+		    #{skillNm},
+		    #{skillType},
+		    #{useYn},
+		    #{note},
+		    #{userId},
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+        )
+	</insert>
+
+	<!-- 스킬 수정 -->
+	<update id="updateSkill" parameterType="java.util.HashMap">
+		UPDATE LL_SKILL 
+		SET    SKILL_CD = #{chSkillCd},
+		   	   SKILL_NM = #{skillNm},		
+		   	   SKILL_TYPE = #{skillType},		
+		   	   USE_YN = #{useYn},
+		   	   BIGO = #{note},
+		   	   UPT_USER_ID = #{userId},	
+		   	   UPT_DATE = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')			
+	    WHERE  SKILL_CD = #{skillCd}
+	</update>	
+
+	<!-- 스킬 삭제 -->
+	<delete id="deleteSkill" parameterType="java.util.HashMap">
+		DELETE FROM LL_SKILL 	
+		WHERE SKILL_CD = #{skillCd}
+	</delete> 					
+</mapper>

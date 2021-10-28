@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.lo.ch.LOCH01_Mapper">
+<!--
+    파일 : 비밀번호 변경 쿼리
+	설명 : 비밀번호 변경 화면에서 사용하는 쿼리
+
+	수정일         수정자        수정내용
+	==========   =========   ================================
+	2021-01-19   ybLee       최초 생성
+-->
+	<select id="findUser" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			  USER_ID,
+			  PASSWORD
+		FROM  LL_USER
+	 	WHERE USER_ID = #{userId}
+	</select>
+
+	<update id="updateUserPswd" parameterType="java.util.HashMap" >
+		UPDATE LL_USER
+		SET    PASSWORD = #{password},
+			   RESET_YN = 'N',
+               UPT_DATE = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+		       UPT_USER_ID = #{userId}
+		WHERE  USER_ID = #{userId}
+	</update>
+</mapper>

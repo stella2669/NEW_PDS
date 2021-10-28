@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.mn.sm.MNSM01_Mapper">
+
+	<select id="getCampAgentList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			   MA.CAMP_ID,
+			   MA.AGENT_ID,
+			   MA.AGENT_NM,
+			   GI.GROUP_NM,
+			   MA.CAMP_NM,
+			   MA.DN,
+			   MA.STATUS,
+			   MA.STATUS_TIME,
+			   MA.ESH_CNT,
+			   MA.ESH_AVR_TIME,
+			   MA.AFTWORK_AVR_TIME,
+			   MA.READY_AVR_TIME,
+			   MA.NOTREADY_AVR_TIME
+		FROM   LL_MONIAGENT MA
+			   LEFT OUTER JOIN
+		       LL_GROUP_AGENTLIST GA
+		       ON MA.AGENT_ID = GA.AGENT_ID
+		       LEFT OUTER JOIN
+		       LL_GROUP_INFO GI
+		       ON GA.GROUP_SEQ = GI.GROUP_SEQ
+		WHERE  CAMP_ID = #{campId}
+		AND    SYYYYMMDD = DATE_FORMAT(NOW(), '%Y%m%d')
+		GROUP BY AGENT_ID
+		ORDER BY AGENT_ID
+	</select>
+
+	<insert id="refreshAgentMonData" parameterType="java.util.HashMap">
+		INSERT INTO LL_MONIAGENT (
+			AGENT_ID,
+			CAMP_ID,
+			CAMP_NM,
+			SYYYYMMDD,
+			AGENT_NM,
+			DN,
+			STATUS,
+			STATUS_TIME,
+			READY_CNT,
+			READY_TOTAL_TIME,
+			READY_AVR_TIME,
+			ESH_CNT,
+			ESH_TOTAL_TIME,
+			ESH_AVR_TIME,
+			NOTREADY_CNT,
+			NOTREADY_TOTAL_TIME,
+			NOTREADY_AVR_TIME,
+			AFTWORK_CNT,
+			AFTWORK_TOTAL_TIME,
+			AFTWORK_AVR_TIME,
+			PREVIEW_ACCEPT_COUNT,
+			PREVIEW_REJECT_COUNT,
+			PREVIEW_DURATION,
+			CONSULT_COUNT,
+			CONSULT_DURATION,
+			CONFERENCE_COUNT,
+			CONFERENCE_DURATION,
+			TRANSFER_INITIATED_COUNT,
+			TRANSFER_RECEIVED_COUNT,
+			CALLBACK_ACCEPT_COUNT,
+			CALLBACK_REJECT_COUNT,
+			CALLBACK_PREVIEW_DURATION,
+			TOTAL_ABANDON_ON_HOLD_COUNT,
+			CRT_DATE,
+			CRT_EMP_NO
+		) VALUES (
+			#{agentId},
+			#{campId},
+			#{campNm},
+			DATE_FORMAT(NOW(), '%Y%m%d'),
+			#{agentNm},
+			#{dn},
+			#{status},
+			#{statustime},
+			#{readyCnt},
+			#{readyTotalTime},
+			#{readyAvrTime},
+			#{eshCnt},
+			#{eshTotalTime},
+			#{eshAvrTime},
+			#{notreadyCnt},
+			#{notreadyTotalTime},
+			#{notreadyAvrTime},
+			#{aftworkCnt},
+			#{aftworkTotalTime},
+			#{aftworkAvrTime},
+			#{previewAcceptCount},
+			#{previewRejectCount},
+			#{previewDuration},
+			#{consultCount},
+			#{consultDuration},
+			#{conferenceCount},
+			#{conferenceDuration},
+			#{transferInitiatedCount},
+			#{transferReceivedCount},
+			#{callbackAcceptCount},
+			#{callbackRejectCount},
+			#{callbackPreviewDuration},
+			#{totalAbandonOnHoldCount},
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+			'batch'
+		) ON DUPLICATE KEY UPDATE
+			CAMP_NM = #{campNm},
+			AGENT_NM = #{agentNm},
+			DN = #{dn},
+			STATUS = #{status},
+			STATUS_TIME = #{statustime},
+			READY_CNT = #{readyCnt},
+			READY_TOTAL_TIME = #{readyTotalTime},
+			READY_AVR_TIME = #{readyAvrTime},
+			ESH_CNT = #{eshCnt},
+			ESH_TOTAL_TIME = #{eshTotalTime},
+			ESH_AVR_TIME = #{eshAvrTime},
+			NOTREADY_CNT = #{notreadyCnt},
+			NOTREADY_TOTAL_TIME = #{notreadyTotalTime},
+			NOTREADY_AVR_TIME = #{notreadyAvrTime},
+			AFTWORK_CNT = #{aftworkCnt},
+			AFTWORK_TOTAL_TIME = #{aftworkTotalTime},
+			AFTWORK_AVR_TIME = #{aftworkAvrTime},
+			PREVIEW_ACCEPT_COUNT = #{previewAcceptCount},
+			PREVIEW_REJECT_COUNT = #{previewRejectCount},
+			PREVIEW_DURATION = #{previewDuration},
+			CONSULT_COUNT = #{consultCount},
+			CONSULT_DURATION = #{consultDuration},
+			CONFERENCE_COUNT = #{conferenceCount},
+			CONFERENCE_DURATION = #{conferenceDuration},
+			TRANSFER_INITIATED_COUNT = #{transferInitiatedCount},
+			TRANSFER_RECEIVED_COUNT = #{transferReceivedCount},
+			CALLBACK_ACCEPT_COUNT = #{callbackAcceptCount},
+			CALLBACK_REJECT_COUNT = #{callbackRejectCount},
+			CALLBACK_PREVIEW_DURATION = #{callbackPreviewDuration},
+			TOTAL_ABANDON_ON_HOLD_COUNT = #{totalAbandonOnHoldCount},
+			UPT_DATE = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+			UPT_EMP_NO = 'batch'
+	</insert>
+
+
+	<insert id="insertAgentEvent01" parameterType="java.util.HashMap">
+		INSERT INTO LL_AGENTEVENT (
+			agentId,
+			syyyymmdd,
+			agentName,
+			stationId,
+			agnetSessionId,
+			skillKey,
+			skillLevel,
+			skillAtt,
+			<if test="agentEventType=='AgentStateEvent'">
+				agentState,
+				logoutReasonCode,
+				notReadyReasonCode,
+				previousAgentState,
+				stateTimestamp,
+			</if>
+			<if test="agentEventType=='AgentJobStateEvent'">
+				jobState,
+				pacingType,
+				jobStateTimestamp,
+			</if>
+			currentCampaignName,
+			currentJobId,
+			currentActionId,
+			currentActionName,
+			currentPacingType,
+			eventTimeStamp
+		) VALUES (
+			#{agentId},
+			DATE_FORMAT(NOW(), '%Y%m%d'),
+			#{agentName},
+			#{stationId},
+			#{agnetSessionId},
+			#{skillKey},
+			#{skillLevel},
+			#{skillAtt},
+			<if test="agentEventType=='AgentStateEvent'">
+				#{agentState},
+				#{logoutReasonCode},
+				#{notReadyReasonCode},
+				#{previousAgentState},
+				#{stateTimestamp},
+			</if>
+			<if test="agentEventType=='AgentJobStateEvent'">
+				#{jobState},
+				#{pacingType},
+				#{stateTimestamp},
+			</if>
+			#{currentCampaignName},
+			#{currentJobId},
+			#{currentActionId},
+			#{currentActionName},
+			#{currentPacingType},
+			#{eventTimeStamp}
+		) ON DUPLICATE KEY UPDATE
+			agentName = #{agentName},
+			stationId = #{stationId},
+			agnetSessionId = #{agentSessionId},
+			skillKey = #{skillKey},
+			skillLevel = #{skillLevel},
+			skillAtt = #{skillAtt},
+			<if test="agentEventType=='AgentStateEvent'">
+				agentState = #{agentState},
+				logoutReasonCode = #{logoutReasonCode},
+				notReadyReasonCode = #{notReadyReasonCode},
+				previousAgentState = #{previousAgentState},
+				stateTimestamp = #{stateTimestamp},
+			</if>
+			<if test="agentEventType=='AgentJobStateEvent'">
+				jobState = #{jobState},
+				pacingType = #{pacingType},
+				jobStateTimestamp = #{stateTimestamp},
+			</if>
+			currentCampaignName = #{currentCampaignName},
+			currentJobId = #{currentJobId},
+			currentActionId = #{currentActionId},
+			currentActionName = #{currentActionName},
+			currentPacingType = #{currentPacingType},
+			eventTimeStamp = #{eventTimeStamp}
+	</insert>
+</mapper>

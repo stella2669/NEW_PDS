@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.us.au.USAU02_Mapper">
+<!-- 왼쪽 권한 그리드 정보 가져오기 -->
+	<select id="getAuthList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			   AUTH_CD,
+			   AUTH_NM
+		FROM   LL_AUTH_CODE
+		WHERE  USE_YN = 'Y'
+		ORDER BY AUTH_CD
+	</select>
+
+ 	<select id="getProgList" parameterType="java.util.HashMap"  resultType="camelCaseResultMap">
+	 	SELECT
+			   A.PROG_CD,
+			   A.PROG_NM,
+			   A.MENU_NM,
+			   CASE WHEN A.AUTH_CD IS NOT NULL THEN 'Y' ELSE 'N' END AS AUTH_YN
+		FROM (SELECT
+			   	      PROG.PROG_CD,
+			   	      PROG.PROG_NM,
+			   	      SCD.COM_SNM AS MENU_NM,
+			   	      AUTH.AUTH_CD
+			    FROM  LL_PROG_CODE PROG LEFT OUTER JOIN
+			   	      ll_AUTH_PROG AUTH ON PROG.PROG_CD = AUTH.PROG_CD AND AUTH.AUTH_CD = #{authCd} LEFT OUTER JOIN
+			   	      LL_SCODE SCD ON PROG.MENU_CD = SCD.COM_SCD AND SCD.COM_LCD = 'ME000' AND SCD.USE_YN = 'Y'
+				ORDER BY PROG.SORT) A;
+ 	</select>
+
+ 	<insert id="insertProgDefaultAuth" parameterType="java.util.HashMap">
+ 		INSERT INTO LL_AUTH_PROG (
+ 			AUTH_CD,
+ 			PROG_CD,
+ 			CRT_USER_ID,
+ 			CRT_DATE
+ 		) VALUES (
+ 			#{authCd},
+ 			#{progCd},
+ 			#{userId},
+ 			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+ 		)
+ 	</insert>
+
+ 	<delete id="deleteProgDefaultAuth" parameterType="java.util.HashMap">
+ 		DELETE FROM LL_AUTH_PROG
+ 		WHERE AUTH_CD = #{authCd}
+ 	</delete>
+
+	<select id="getThisAuthUser" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			   USER_ID
+		FROM   LL_USER
+		WHERE  AUTH_CD = #{authCd}
+	</select>
+
+	<select id="getThisAuthProg" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELERC
+			   PROG_CD
+		FROM   LL_AUTH_PROG
+		WHERE  AUTH_CD =  #{authCd}
+	</select>
+
+ 	<insert id="chAuthProgAdd" parameterType="java.util.HashMap">
+ 		INSERT IGNORE INTO LL_USER_AUTH (
+ 			USER_ID,
+ 			PROG_CD,
+ 			CRT_DATE,
+ 			CRT_USER_ID
+ 		) VALUES (
+ 			#{userId},
+ 			#{progCd},
+ 			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+ 			#{crtUserId}
+ 		)
+ 	</insert>
+</mapper>

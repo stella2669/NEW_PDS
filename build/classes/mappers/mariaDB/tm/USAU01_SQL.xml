@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.us.au.USAU01_Mapper">
+
+ 	<select id="getProgList" parameterType="java.util.HashMap"  resultType="camelCaseResultMap">
+	 	SELECT
+			   A.PROG_CD,
+			   A.PROG_NM,
+			   A.MENU_NM,
+			   CASE WHEN A.USER_ID IS NOT NULL THEN 'Y' ELSE 'N' END AS AUTH_YN
+		FROM  (SELECT 
+			   	      PROG.PROG_CD,
+			   	      PROG.PROG_NM,			   	
+			   	      SCD.COM_SNM AS MENU_NM,
+			   	      AUTH.USER_ID
+			    FROM  LL_PROG_CODE PROG LEFT OUTER JOIN 
+			   	      LL_USER_AUTH AUTH ON PROG.PROG_CD = AUTH.PROG_CD AND AUTH.USER_ID = #{userId} LEFT OUTER JOIN					  
+			   	      LL_SCODE SCD ON PROG.MENU_CD = SCD.COM_SCD AND SCD.COM_LCD = 'ME000' AND SCD.USE_YN = 'Y'
+				ORDER BY PROG.SORT) A
+ 	</select>	
+ 	
+ 	<insert id="insertProgAuth" parameterType="java.util.HashMap">
+ 		INSERT INTO LL_USER_AUTH (
+ 			USER_ID,
+ 			PROG_CD,
+ 			CRT_USER_ID,
+ 			CRT_DATE
+ 		) VALUES (
+ 			#{authUserId},
+ 			#{progCd},
+ 			#{userId},
+ 			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s') 		
+ 		) 		
+ 	</insert>
+ 	
+ 	<delete id="deleteProgAuth" parameterType="java.util.HashMap">
+ 		DELETE FROM LL_USER_AUTH
+ 		WHERE USER_ID = #{authUserId}
+ 	</delete>
+</mapper>

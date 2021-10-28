@@ -1,0 +1,69 @@
+/**
+ *
+ */
+
+
+var contactData = {
+	contactNm:"",
+	inUse : "",
+	jobState:"",
+	bigo:"",
+	userId: loginInfo.userId
+}
+
+
+$("#save").click(function(){
+	if(setContactData()){
+		if(selectedContactListId==""){
+			LLYNX_Confirm("등록하시겠습니까?", "insertContacList");
+		}else{
+			LLYNX_Confirm("수정하시겠습니까?", "updateContactList");
+		}
+	}
+});
+
+
+$(".popup_close").click(function(){
+	parent.popupClose();
+});
+
+function insertContacList(){
+	CUCO01_Service.insertContactlist(contactData, function(result) {
+		if (result.result == "S") {
+			$("#ifr_tabs-PG_CUCO_01", parent.document)[0].contentWindow.contactListSearch();
+			LLYNX_Alert("등록되었습니다.", "close");
+			//lcdSearch();
+		} else {
+			LLYNX_Alert(result.msg);
+		}
+	});
+}
+
+function updateContactList(){
+	delete contactData.name;
+	ECMService.updateAPI("contactlists/"+selectedContactListId, JSON.stringify(contactData), function(result){
+		if(result.result=="S"){
+			$("#ifr_tabs-PG_CUCO_01", parent.document)[0].contentWindow.contactListSearch();
+			LLYNX_Alert("수정되었습니다.", "close");
+		}else{
+			if(result.code!=null){
+				LLYNX_Alert(ECMError(result.code, result.message));
+			}else{
+				LLYNX_Alert(result.msg);
+			}
+		}
+	});
+}
+
+function setContactData(){
+	if($("#contactNm").val()==""){
+		LLYNX_Alert("컨택리스트명을 입력해주세요", "focus", "contactNm");
+		return false;
+	}else{
+		contactData.contactNm = $("#contactNm").val();
+		contactData.bigo = $("#bigo").val();
+		contactData.isUse = 'Y';
+		contactData.jobState = '1000';
+		return true;
+	}
+}

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.fr.fr.FRFR01_Mapper">
+<!--
+    파일 : 메인화면 쿼리
+	설명 : 메인화면에서 사용하는 쿼리
+
+	수정일               수정자              수정내용
+	==========   =========   ================================
+	2021-01-19   ybLee         최초 생성
+-->
+
+	<select id="getIntroAgentMonData" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			IFNULL(SUM(T.BUSY_CNT), 0) AS BUSY_CNT,
+			IFNULL(SUM(T.LOGGED_OUT_CNT), 0) AS LOGGED_OUT_CNT,
+			IFNULL(SUM(T.NOT_READY_CNT), 0) AS NOT_READY_CNT,
+			IFNULL(SUM(T.READY_CNT), 0) AS READY_CNT,
+			IFNULL(SUM(T.WORK_NOT_READY_CNT), 0) AS WORK_NOT_READY_CNT,
+			IFNULL(SUM(T.LOGGED_IN_CNT), 0) AS LOGGED_IN_CNT
+		FROM (SELECT
+				CASE WHEN AGENTSTATE='BUSY' THEN COUNT(AGENTSTATE) ELSE 0 END AS BUSY_CNT,
+				CASE WHEN AGENTSTATE='LOGGED_OUT' THEN COUNT(AGENTSTATE) ELSE 0 END AS LOGGED_OUT_CNT,
+				CASE WHEN AGENTSTATE='NOT_READY' THEN COUNT(AGENTSTATE) ELSE 0 END AS NOT_READY_CNT,
+				CASE WHEN AGENTSTATE='READY' THEN COUNT(AGENTSTATE) ELSE 0 END AS READY_CNT,
+				CASE WHEN AGENTSTATE='WORK_NOT_READY' THEN COUNT(AGENTSTATE) ELSE 0 END AS WORK_NOT_READY_CNT,
+				CASE WHEN AGENTSTATE='LOGGED_IN' THEN COUNT(AGENTSTATE) ELSE 0 END AS LOGGED_IN_CNT
+			FROM LL_AGENTEVENT
+			WHERE
+				SYYYYMMDD = DATE_FORMAT(NOW(), '%Y%m%d')
+			GROUP BY AGENTSTATE) T
+	</select>
+
+	<select id="mainMessCnt" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		SELECT
+			   SUM(CASE WHEN RC.DEL_YN = 'N' AND RC.RCV_DATE IS NULL THEN 1 ELSE 0 END) AS MSG_CNT
+		FROM   LL_MESS_RCVINFO RC
+		WHERE  RCV_EMP_NO = #{empNo}
+		GROUP BY RCV_EMP_NO
+	</select>
+
+
+	<select id="mainCallbackCnt" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		SELECT
+			   COUNT(CALL_EMP_NO) AS CALL_BACK
+		FROM   LL_CALLBACK
+		WHERE  CALL_EMP_NO = #{empNo} AND (RST_CD = '1000' OR RST_CD IS NULL) AND INSERT_DATE = DATE_FORMAT(NOW(), '%Y%m%d')
+    </select>
+
+	<select id="mainResTime" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			   SUBSTR(Q.RES_DATE, 1, 4) AS YY,
+		       SUBSTR(Q.RES_DATE, 5, 2) AS MM,
+		       SUBSTR(Q.RES_DATE, 7, 2) AS DD,
+			   SUBSTR(Q.RES_TIME, 1, 2) AS HI,
+		       SUBSTR(Q.RES_TIME, 3, 2) AS MI,
+		       '00'                    AS SS
+		FROM   (SELECT * FROM LL_RESINFO
+			    WHERE RES_EMP_NO = #{empNo} AND RST_CD = '1000'
+		        AND RES_DATE = DATE_FORMAT(NOW(), '%Y%m%d')
+		        AND RES_TIME <![CDATA[>]]> DATE_FORMAT(NOW(), '%H%i%s')
+				ORDER BY RES_DATE, RES_TIME) Q
+		LIMIT 1
+	</select>
+
+	<select id="getAuthCheck" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		 SELECT
+		 	   USER_ID,
+		 	   PROG_CD
+		 FROM  LL_USER_AUTH
+         WHERE PROG_CD IN (SELECT PROG_CD FROM LL_PROG_CODE WHERE CALL_URL LIKE CONCAT(#{url},'%') AND USE_YN ='Y')
+         AND   USER_ID = #{userId}
+	</select>
+</mapper>

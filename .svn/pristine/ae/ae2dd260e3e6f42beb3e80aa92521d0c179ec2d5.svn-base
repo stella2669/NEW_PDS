@@ -1,0 +1,118 @@
+@charset "utf-8";
+
+/*
+font-weight:300; Light
+font-weight:400; Regular
+font-weight:500; Medium
+*/
+
+/*************** pass : start ***************/
+body#tm_pass { max-width:560px; margin:auto; overflow:hidden; }
+
+#pass_wrap { width:100%; background:#fff; }
+
+/*pass_header*/
+#pass_header { display:flex; justify-content:space-between; align-items:center; line-height:1; height:60px; padding:0 15px; }
+#pass_header h1 { display:block; margin:0 auto; width:113px; height:43px; color:transparent; text-indent:-99999px; background:url(../images/inc/logo_o.png) 0 0 no-repeat; background-size:100%; }
+/* #pass_header h1 { font-size:22px; color:#ea494b; font-weight:500; letter-spacing:-1.5px; } */
+#pass_header .close { margin-right:2px; }
+#pass_header .back i, #pass_header .close i { font-size:20px!important; color:#4e4e4e; }
+#pass_header .back:hover i, #pass_header .close:hover i { color:#ea494b; }
+
+/*pass_title*/
+.pass_title { background:#ea494b; text-align:center; color:#fff; padding:15px 0; font-size:18px; line-height:1; }
+.pass_title h2 { font-weight:300; }
+
+
+/*pass_container*/
+#pass_container { padding-bottom:40px; }
+#pass_contents { padding:0 20px; letter-spacing:-1px; }
+
+/*pass_sub_title*/
+.pass_sub_title { display:flex; justify-content:flex-start; align-items:center; margin-bottom:10px; margin-top:20px; }
+.pass_sub_title h3, .pass_sub_title h3 label, .pass_sub_title input[type=checkbox] + label h3.label_txt { font-weight:500; color:#000; font-size:18px; line-height:1; }
+.pass_sub_title .label_txt { display:flex; justify-content:flex-start; align-items:center; }
+.pass_sub_title h3 i { display:inline-block; margin-right:3px; }
+.pass_section .pass_sub_title:first-child { margin-top:0; }
+.pass_section_flex { display:flex; justify-content:space-between; align-items:center; }
+
+/*pass_spot*/
+.pass_spot { }
+.pass_spot .img_a { width:120px; height:93px; background:url(../images/pass/pass_icon_start.png) 0 0 no-repeat; background-size:100%; margin:0 auto; margin-bottom:15px; }
+.pass_spot .img_b { width:118px; height:114px; background:url(../images/pass/pass_icon_end.png) 0 0 no-repeat; background-size:100%; margin:0 auto; margin-bottom:15px; }
+.pass_spot .text { color:#000; font-size:28px; text-align:center; line-height:1.2; letter-spacing:-2px; }
+.pass_spot .text b, .pass_spot .text span { display:block; font-weight:300; }
+.pass_spot .text b { display:block; font-weight:500; }
+
+/*pass_selecter*/
+.pass_selecter { background:#ececec; padding:25px 0; }
+.pass_selecter ul { margin:0 auto; }
+.pass_selecter ul li { display:flex; justify-content:center; align-items:center; }
+.pass_selecter ul li .img_a { width:80px; height:80px; background:url(../images/pass/pass_icon_phone.png) 0 0 no-repeat; background-size:100%; margin-right:10px; }
+.pass_selecter ul li .text b, .pass_selecter ul li .text span { display:block; font-weight:300; color:#777; font-size:14px; }
+.pass_selecter ul li .text b { font-size:18px; color:#000; }
+.pass_selecter ul li .text span { margin-top:5px; }
+
+/*checkbox_img*/
+.pass_agree { border:1px solid #c8c8c8; padding:20px; }
+.pass_agree li { margin-top:12px; display:flex; justify-content:space-between; align-items:center; }
+.pass_agree li:first-child { margin-top:0; }
+.pass_agree .detail { font-size:22px; color:#b0b0b0; }
+
+.checkbox_img { display:block }
+.checkbox_img input[type=checkbox] { display:none; }
+.checkbox_img input[type=checkbox] + label { display:flex; justify-content:flex-start; align-items:center; cursor:pointer; }
+.checkbox_img input[type=checkbox] + label .label_txt { margin-left:8px; margin-bottom:3px; font-size:16px; color:#555; font-weight:300; }
+.checkbox_img input[type=checkbox] + label i { font-size:16px; color:#b0b0b0; width:22px; height:22px; background:#fff; border:2px solid #b0b0b0; text-align:center; }
+.checkbox_img input[type=checkbox]:checked + label i { background:#2ca2d4; border:2px solid #2ca2d4; color:#fff; }
+
+.checkbox_img input[type=radio] { display:none; }
+.checkbox_img input[type=radio] + label { display:block; cursor:pointer; width:100%; line-height:40px; height:40px; background:#ececec; border:1px solid #c8c8c8; text-align:center; }
+.checkbox_img input[type=radio]:checked + label { background:#2ca2d4; border:1px solid #2ca2d4; color:#fff; }
+
+/*pass_input_box*/
+.pass_form_box { font-size:16px; color:#555; font-weight:300; display:flex; justify-content:space-between; align-items:center; }
+.pass_form_box .pass_form_item { display:flex; justify-content:space-between; align-items:center; width:100%; }
+.pass_form_box input[type=text] { width:100%; height:40px; padding:0 10px; background:#fff; border:1px solid #c8c8c8; font-size:16px; color:#555; font-weight:300; }
+.pass_form_box input[type=text]:placeholder { color:#858585!important; }
+.pass_form_box input[type=text]:-ms-input-placeholder { color:#858585!important; }
+.pass_form_box input[type=text]:focus { background:#e5f7ff; border:1px solid #2ca2d4; }
+
+.pass_form_box .select_wrap { height:40px; padding:5px 10px; background:#fff; border:1px solid #c8c8c8; }
+.pass_form_box select { background:#fff; border:none; font-size:16px; color:#555; font-weight:300; letter-spacing:-2px; width:100px; }
+
+.pass_form_box .confirm_wrap { width:100%; height:40px; padding:0 10px; background:#fff; border:1px solid #c8c8c8; display:flex; justify-content:space-between; align-items:center; }
+.pass_form_box .confirm_wrap input[type=text] { width:70%; height:auto; padding:0; border:none; }
+
+/*pass_btn*/
+.btn_size_pass_n { width:100%; height:40px; color:#fff; border-radius:5px; font-size:16px; font-weight:300; }
+.btn_size_pass_l { width:100%; height:50px; color:#fff; border-radius:5px; font-size:20px; font-weight:500; }
+.btn_size_pass_lo { width:100%; height:50px; color:#2b4877; border-radius:5px; font-size:20px; font-weight:500; background:#fff; border:2px solid #2b4877; }
+.btn_size_pass_lo:hover { background:#e8eff9; border:2px solid #2b4877; }
+
+/*pass_table*/
+.pass_table table { width:100%; border-top:2px solid #4e4e4e; }
+.pass_table table th, .pass_table table td { border-bottom:1px solid #c8c8c8; padding:15px 10px; line-height:1.25; font-size:14px; }
+.pass_table table th { color:#777; }
+.pass_table table td { color:#000; font-weight:500; }
+
+/*pass_upload*/
+.pass_upload_list { border:1px solid #c8c8c8; background:#ececec; padding:20px; font-size:16px; color:#858585; }
+.pass_upload_list ul li { width:100%; display:flex; justify-content:space-between; align-items:center; margin:10px 0; }
+.pass_upload_list ul li i { margin-right:3px; }
+.pass_upload_list .list_name { display:flex; justify-content:flex-start; align-items:center; }
+.file_delete { background:#4e4e4e; padding:5px; border-radius:5px; }
+.file_delete i { color:#fff; display:block; margin:0!important; font-size:12px; }
+
+.pass_upload_box { width:100%; display:flex; justify-content:space-between; align-items:center; }
+.pass_upload_box .faker { width:65%; display:block; }
+.pass_upload_box .btn { width:35%; margin-left:5px; }
+.pass_upload_box .btn label { width:100%; display:block; line-height:40px; }
+.pass_upload_box .upload_hidden { display:none; }
+
+
+/*pass_footer*/
+#pass_footer { text-align:center; padding:20px 0; background:#f0f0f0; border-top:1px solid #c8c8c8; font-size:12px; color:#999; display:none; }
+
+
+/*************** pass : end ***************/

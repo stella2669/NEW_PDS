@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" href="../../css/import.css">
+<script src="../../js/libs/jquery-3.2.0.min.js"></script>
+<script src="../../js/libs/jquery-ui.js"></script>
+<script src="../../js/libs/jquery.jqGrid.min.js"></script>
+<script src="../../js/libs/jquery.bxslider.js"></script><!-- bxslider -->
+<script src="../../js/libs/design.js"></script><!-- 임시 스크립트 -->
+<title>type_grid_main</title>
+</head>
+
+<body class="frame">
+
+<!-- skip : start -->
+<!-- skip : end -->
+
+
+<!-- wrap : start -->
+<div id="wrap">
+
+	<!-- header : start -->
+	<header id="header">
+		<button type="button" class="gnb_ctrl"><span class="replace_text">메인메뉴 닫기</span></button>
+	</header>
+	<!-- header : end -->
+
+	<!-- container : start -->
+	<div id="container">
+		<!-- soft_phone : start -->
+		<div class="soft_phone" style="height:70px"></div>
+		<!-- soft_phone : end -->
+		<!-- notice : start -->
+		<div class="notice">
+			<ul>
+				<li>
+					<i class="xi-volume-max"></i>
+					<a href="javascript:void(0)">
+						<strong class="fc_0">[긴급공지]</strong>
+						<span>코로나19로 인한 고객응대 지침사항을 준수하여 상담을 진행해주시기 바랍니다.</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<!-- notice : end -->
+
+		<!-- contents : start -->
+		<div id="contents">
+			<!-- tab : start -->
+			<div id="tabs" class="tabs tab_main mt_5">
+				<ul class="main_tab_header">
+					<li class="fix" id="tab_fix"><a href="#fix-menu1">intro</a><span class="tooltip">intro</span></li>
+				</ul>
+				<!-- tab_body : start -->
+				<div id="fix-menu1" class="main_tab_body">
+					<!-- tm_wrap : start -->
+					<div class="tm_wrap layout_t1">
+						<!-- tm_A : start -->
+						<div class="tm_secA tm_outer">
+							<!-- garbage_div : start -->
+							<div class="garbage_div">
+								<!-- search : start -->
+								<div class="search_A2 alt">
+									<div class="sc_input">
+										<dl>
+											<dt>배정일자</dt>
+											<dd>
+												<div class="input_box">
+													<div class="date_pick">
+														<input type="text" class="date_cell input_type01 w_60" id="in_date1">
+														<label class="date_icon" for="in_date1"><i class="xi-calendar-check"></i><span class="replace_text">시작 기간</span></label>
+													</div>
+													<div class="date_space">~</div>
+													<div class="date_pick">
+														<input type="text" class="date_cell input_type01 w_60" id="in_date2">
+														<label class="date_icon" for="in_date2"><i class="xi-calendar-check"></i><span class="replace_text">종료 기간</span></label>
+													</div>
+												</div>
+											</dd>
+										</dl>
+										<dl>
+											<dt>배분상태</dt>
+											<dd>
+												<select class="select_type01 w_150" title="배분상태 선택">
+													<option value="">전체</option>
+													<option value="">2020년 50대 건강보험 안내</option>
+												</select>
+											</dd>
+										</dl>
+										<dl>
+											<dt>캠페인명</dt>
+											<dd>
+												<select class="select_type01 w_150" title="캠페인명 선택">
+													<option value="">전체</option>
+													<option value="">2020년 50대 건강보험 안내</option>
+												</select>
+											</dd>
+										</dl>
+										<dl>
+											<dt>고객명</dt>
+											<dd><input type="text" class="input_type01 w_60" title="고객명"></dd>
+										</dl>
+										<dl>
+											<dt>핸드폰</dt>
+											<dd>
+												<div class="input_box">
+													<select class="select_type01" title="핸드폰 앞자리 선택">
+														<option>010</option>
+														<option>011</option>
+													</select>
+													<span class="hyphen">-</span>
+													<input type="text" class="input_type01 w_tiny" maxlength="4" title="핸드폰 중간자리 입력">
+													<span class="hyphen">-</span>
+													<input type="text" class="input_type01 w_tiny" maxlength="4" title="핸드폰 마지막자리 입력">
+												</div>
+											</dd>
+										</dl>
+									</div>
+									<div class="button a_r mt_10">
+										<button type="button" class="btn btn_third btn_size_s">
+											<i class="xi-search"></i>조회
+										</button>
+									</div>
+								</div>
+								<!-- search : end -->
+								<!-- board : start -->
+								<div class="out_list">
+									<div class="board_A0_L a_c font_big">
+										<table aria-describedby="table_summary">
+											<caption id="table_summary">고객 리스트</caption>
+											<colgroup>
+												<col style="width:auto">
+												<col style="width:auto">
+												<col style="width:auto">
+												<col style="width:auto">
+												<col style="width:auto">
+												<col style="width:auto">
+												<col style="width:auto">
+											</colgroup>
+											<thead>
+												<tr class="bd_top">
+													<th scope="col">번호</th>
+													<th scope="col">고객명</th>
+													<th scope="col">생년월일</th>
+													<th scope="col">성별</th>
+													<th scope="col">상태</th>
+													<th scope="col">통화일시</th>
+													<th scope="col">배정캠페인</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>1</td>
+													<td>고객명</td>
+													<td>19700101</td>
+													<td>남자</td>
+													<td>미통화</td>
+													<td class="nw">2020-08-10<br>00:00:00</td>
+													<td class="nw">2020년 8월 30대 보험</td>
+												</tr>
+												<tr>
+													<td colspan="7">검색결과가 없습니다.</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+								<!-- board : end -->
+								<!-- button : start -->
+								<button type="button" class="box_ctrl">
+									<span class="replace_text">고객리스트 닫기</span>
+								</button>
+								<!-- button : end -->
+							</div>
+							<!-- garbage_div : end -->
+						</div>
+						<!-- tm_A : end -->
+
+						<!-- tm_B : start -->
+						<div class="tm_secB tm_outer">
+							<!-- tm_B1 : start -->
+							<div class="tm_inner tmc_secA">
+								<div class="tms_secA">
+									<!-- sub_tabs : start -->
+									<div id="sub_tabs" class="tabs tab_A0">
+										<ul class="sub_tab_header">
+											<li><a href="#sub_tabs1-1">고객정보조회</a></li>
+											<li><a href="#sub_tabs1-2">계약정보조회</a></li>
+											<li><a href="#sub_tabs1-3">계좌정보조회</a></li>
+											<li><a href="#sub_tabs1-4">기지금조회</a></li>
+											<li><a href="#sub_tabs1-5">특이사항</a></li>
+										</ul>
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs1-1" class="sub_tab_body">
+											<iframe src="inner4_1.html" title="계약정보조회"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs1-2" class="sub_tab_body">
+											<iframe src="../ABC/ABC000800_T.html" title="계좌정보조회"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs1-3" class="sub_tab_body">
+											<iframe src="../ABC/ABC000900_T.html" title="기지금조회"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs1-4" class="sub_tab_body">
+											<iframe src="../ABC/ABC001100_T.html" title="특이사항"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+									</div>
+									<!-- sub_tabs : end -->
+								</div>
+								<div class="tms_secB">
+									<!-- sub_tabs : start -->
+									<div id="sub_tabs2" class="tabs tab_A0">
+										<ul class="sub_tab_header">
+											<li><a href="#sub_tabs2-1">상담이력등록</a></li>
+											<li><a href="#sub_tabs2-2">상담예약</a></li>
+										</ul>
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs2-1" class="sub_tab_body">
+										</div>
+										<!-- sub_tab_body : end -->
+									</div>
+									<!-- sub_tabs : end -->
+								</div>
+							</div>
+							<!-- tm_B1 : end -->
+
+							<!-- tm_B2 : start -->
+							<div class="tm_inner tmc_secB">
+								<div class="tms_secA">
+									<!-- sub_tabs : start -->
+									<div id="sub_tabs3" class="tabs tab_A0">
+										<ul class="sub_tab_header">
+											<li><a href="#sub_tabs3-1">청약/설계</a></li>
+											<li><a href="#sub_tabs3-2">해약환급금예시</a></li>
+											<li><a href="#sub_tabs3-3">보장내용</a></li>
+											<li><a href="#sub_tabs3-4">계약자가입한도</a></li>
+											<li><a href="#sub_tabs3-5">피보험자가입한도</a></li>
+											<li><a href="#sub_tabs3-6">실손보험</a></li>
+										</ul>
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs3-1" class="sub_tab_body">
+											<iframe src="../ABC/ABC001300_T.html" title="해약환급금예시"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs3-2" class="sub_tab_body">
+											<iframe src="../ABC/ABC001400_T.html" title="보장내용"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs3-3" class="sub_tab_body">
+											<iframe src="../ABC/ABC001500_T.html" title="계약자가입한도"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs3-4" class="sub_tab_body">
+											<iframe src="../ABC/ABC001600_T.html" title="피보험자가입한도"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs3-5" class="sub_tab_body">
+											<iframe src="../ABC/ABC001700_T.html" title="실손보험"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+									</div>
+									<!-- sub_tabs : end -->
+								</div>
+							</div>
+							<!-- tm_B2 : end -->
+
+							<!-- tm_B3 : start -->
+							<div class="tm_inner tmc_secC">
+								<div class="tms_secC">
+									<!-- sub_tabs : start -->
+									<div id="sub_tabs5" class="tabs tab_A0">
+										<ul class="sub_tab_header">
+											<li><a href="#sub_tabs5-1">상담이력</a></li>
+											<li><a href="#sub_tabs5-2">설계이력</a></li>
+											<li><a href="#sub_tabs5-3">청약이력</a></li>
+											<li><a href="#sub_tabs5-4">심사이력</a></li>
+											<li><a href="#sub_tabs5-5">예약콜</a></li>
+											<li><a href="#sub_tabs5-6">채널이력</a></li>
+											<li><a href="#sub_tabs5-7">첩촉이력</a></li>
+											<li><a href="#sub_tabs5-8">세대정보</a></li>
+											<li><a href="#sub_tabs5-9">알림정보</a></li>
+											<li><a href="#sub_tabs5-10">고객변경이력</a></li>
+										</ul>
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs5-1" class="sub_tab_body">
+											<iframe src="../ABC/ABC002400_T.html" title="상담이력"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs5-2" class="sub_tab_body">
+											<iframe src="../ABC/ABC002500_T.html" title="설계이력"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs5-3" class="sub_tab_body">
+											<iframe src="../ABC/ABC002600_T.html" title="청약이력"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs5-4" class="sub_tab_body">
+											<iframe src="../ABC/ABC002700_T.html" title="심사이력"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs5-5" class="sub_tab_body">
+											<iframe src="../ABC/ABC002800_T.html" title="예약콜"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs5-6" class="sub_tab_body">
+											<iframe src="../ABC/ABC002900_T.html" title="채널이력"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs5-7" class="sub_tab_body">
+											<iframe src="../ABC/ABC003000_T.html" title="첩촉이력"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs5-8" class="sub_tab_body">
+											<iframe src="../ABC/ABC003100_T.html" title="세대정보"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs5-9" class="sub_tab_body">
+											<iframe src="../ABC/ABC003200_T.html" title="알림정보"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+										<!-- sub_tab_body : start -->
+										<div id="sub_tabs5-10" class="sub_tab_body">
+											<iframe src="../ABC/ABC003300_T.html" title="고객변경이력"></iframe>
+										</div>
+										<!-- sub_tab_body : end -->
+									</div>
+									<!-- sub_tabs : end -->
+								</div>
+							</div>
+							<!-- tm_B3 : end -->
+						</div>
+						<!-- tm_B : end -->
+					</div>
+					<!-- tm_wrap : end -->
+				</div>
+				<!-- tab_body : end -->
+
+			</div>
+			<!-- tab : end -->
+		</div>
+		<!-- contents : end -->
+
+	</div>
+	<!-- container : end -->
+
+</div>
+<!-- wrap : end -->
+
+
+
+<script>
+	$("#sub_tabs").tabs();
+	$("#sub_tabs2").tabs();
+	$("#sub_tabs3").tabs();
+	$("#sub_tabs4").tabs();
+	$("#sub_tabs5").tabs();
+</script>
+
+
+
+</body>
+</html>

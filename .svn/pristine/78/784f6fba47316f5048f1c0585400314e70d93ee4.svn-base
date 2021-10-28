@@ -1,0 +1,268 @@
+/**
+ * 컨택리스트 관리
+ */
+
+var selectedContactId="";
+
+var isCycle = false;
+var selectedSchCycle="";
+var updateData;
+
+var contactColModel = [
+	{label:"컨택리스트ID", name:"id", align:"center", width:30, key:true},
+	{label:"컨택리스트명", name:"name", align:"left", width:60},
+	{label:"전체 컨택수", formatter:addCommaStr, name:"totalContacts", align:"right", width:30},	
+	{label:"사용여부", name:"lastDatasourceJobStatus", formatter : lastDatasourceJobStatus, align:"center", width:40},
+	{label:"생성자", name:"createdBy", align:"center", width:30},
+	{label:"상세보기", name:"id", formatter : detailButton, align:"center", width:35},
+	{label:"업로드", name:"id", formatter : setButtons1, align:"center", width:35},
+	{label:"상태변경", name:"id", formatter : setButtons2, align:"center", width:40},
+	{label:"데이터소스", name:"id", formatter : setButtons3, align:"center", width:40},
+	{label:"비우기", name:"id", formatter : setButtons4, align:"center", width:30},
+	{label:"설명", hidden:true}
+]
+
+var contactSearchData = {
+	currentPage:1,
+	pageSize:15,
+	order:"",
+	sort:"",
+	searchBy:"",
+	searchValue:""
+}
+
+var contactGrid = new webticsGrid();
+
+//grid resize
+$(window).bind("resize", function() {
+	$("#contactGrid").setGridWidth($("#divDataGrid").width(), true);
+	// 가로 스크롤 제거
+	$('.ui-jqgrid .ui-jqgrid-bdiv').css('overflow-x', 'hidden');
+}).trigger("resize");
+
+$(document).ready(function(){
+	contactGrid.id("contactGrid");
+	contactGrid.colModel(contactColModel);
+	contactGrid.call();
+
+	$("#search").click();
+	$("#schKeyword").focus();
+});
+
+$("#schKeyword").keyup(function(e){
+	if(e.keyCode==13){
+		$("#search").click();
+	}
+});
+
+$("#search").click(function(){
+	contactDataReset();
+	setFirstSrch_contactGrid();
+	contactListSearch();
+});
+
+$("#schSort").change(function(){
+	contactSearchData.sort = $(this).val();
+	contactListSearch();
+});
+
+$("#schOrder").change(function(){
+	contactSearchData.order =  $(this).val();
+	contactListSearch();
+});
+
+$("#schCycle").change(function(){
+	if(selectedSchCycle!=$("#schCycle").val()){
+		isCycle = false;
+		selectedSchCycle = $("#schCycle").val();
+	}
+	contactListSearch();
+});
+
+$("#reset").click(function(){
+	contactDataReset();
+	$("#contactListNm").focus();
+});
+
+$("#save").click(function(){
+	parent.popupOpen("/cu/cuco0101.do");
+});
+
+$("#delete").click(function(){
+	LLYNX_Confirm("삭제하시겠습니까?", "deleteContactList");
+});
+
+function deleteContactList(){
+	ECMService.deleteAPI("contactlists/"+selectedContactId, JSON.stringify({contactlistI: selectedContactId}), function(result){
+		if(result.result=="S"){
+			LLYNX_Alert("삭제되었습니다.");
+			$("#search").click();
+		}else{
+			if(result.code!=null){
+				LLYNX_Alert(ECMError(result.code, result.message));
+			}else{
+				LLYNX_Alert(result.msg);
+			}
+		}
+	});
+}
+
+function validator(){
+	if(firstYn_contactGrid){
+		contactSearchDataReset();
+		contactSearchData.sort =  $("#schSort").val();
+		contactSearchData.order =  $("#schOrder").val();
+		contactSearchData.searchBy =  $("#schBy").val();
+		contactSearchData.searchValue =  $("#schKeyword").val();
+		if(selectedSchCycle!=$("#schCycle").val()){
+			isCycle = false;
+			selectedSchCycle = $("#schCycle").val();
+		}
+	}
+	contactSearchData = getPageInfo_contactGrid(contactSearchData);
+	return true;
+}
+
+function contactListSearch(){
+	return;
+	if(validator()){
+		progressShow();
+		CUCO01_Service.getContactList(contactSearchData, function(result) {
+			//console.log(JSON.stringify(result));
+			progressHide();
+			if (result.result == "S") {
+				lcdGrid.setGrid(result);
+				lcdGrid.setSelectRowFunc("lcdSelectRow");
+			} else {
+				LLYNX_Alert(result.msg);
+			}
+		});
+	}
+}
+
+function contactListSearchCycle(){
+	ECMService.getAPI("contactlists", JSON.stringify(contactSearchData), function(result){
+		if(result.result=="S"){
+			contactGrid.setECMGrid(result);
+			contactGrid.setSelectRowFunc("contactSelectRow");
+			if(selectedSchCycle!=""){
+				if(!isCycle){
+					clearInterval(updateData);
+					updateData = setInterval(function(){contactListSearchCycle();}, selectedSchCycle*1000);
+				}
+				isCycle = true;
+			}else{
+				clearInterval(updateData);
+				isCycle = false;
+			}
+			if(selectedContactId!=""){
+				$(".ui-state-highlight").removeClass("ui-state-highlight");
+				$("#"+selectedContactId).addClass("ui-state-highlight");
+			}
+		}else{
+			if(result.code!=null){
+				LLYNX_Alert(ECMError(result.code, result.message));
+			}else{
+				LLYNX_Alert(result.msg);
+			}
+		}
+	});
+}
+
+function contactSelectRow(rowData, rowId){
+	selectedContactId = $("#contactGrid").jqGrid("getCell", rowId, "id");
+	$(".ui-state-highlight").removeClass("ui-state-highlight");
+	$("#"+selectedContactId).addClass("ui-state-highlight");
+}
+
+
+function contactSearchDataReset(){
+	selectedContactId="";
+	contactSearchData = { currentPage:1, pageSize:15, order:"", sort:"", searchBy:"", searchValue:"" };
+}
+
+function contactDataReset(){
+	selectedContactId="";
+}
+
+function detailButton(value){
+	var buttons = '<button type="button" class="btn btn_secondary btn_size_n" onclick="contactDetail(\''+value+'\')"><i class="xi-zoom-in"></i>상세정보</button>';
+	return buttons;
+}
+
+function setButtons1(value){
+	var format = '<button type="button" class="btn btn_third btn_size_n" onclick="contactUpload('+value+')"><i class="xi-file"></i>컨택업로드</button>';
+	return format;
+}
+
+function setButtons2(value){
+	var format = '<button type="button" class="btn btn_third btn_size_n" onclick="changeStatus('+value+')"><i class="xi-exchange"></i>상태일괄변경</button>';
+	return format;
+}
+
+function setButtons3(value){
+	var format = '<button type="button" class="btn btn_third btn_size_n" onclick="linkDatasorce('+value+')"><i class="xi-devices"></i>데이터소스 관리</button>';
+	return format;
+}
+
+function setButtons4(value){
+	var format = '<button type="button" class="btn btn_primary btn_size_n" onclick="listEmpty('+value+')"><i class="xi-eraser"></i>비우기</button>';
+	return format;
+}
+
+function contactDetail(id){
+	parent.popupOpen("/cu/cuco0101.do?contactlistId="+id);
+}
+
+function contactUpload(id){
+	parent.popupOpen("/cu/cuco02.do?contactListId="+id);
+}
+
+function changeStatus(id){
+	ECMService.getAPI("contactlists/"+id, JSON.stringify({contactlistId:selectedContactId}), function(result){
+		if(result.result=="S"){
+			if(result.totalContacts==0){
+				LLYNX_Alert(result.name+"컨택리스트에 연결된 컨택이 존재하지 않습니다.")
+			}else{
+				parent.popupOpen("/cu/cuco03.do?contactListId="+id);
+			}
+		}else{
+			if(result.code!=null){
+				LLYNX_Alert(ECMError(result.code, result.message));
+			}else{
+				LLYNX_Alert(result.msg);
+			}
+		}
+	});
+}
+
+function linkDatasorce(id){
+	parent.popupOpen("/cu/cuco04.do?contactListId="+id);
+}
+
+var emptyId = "";
+
+function listEmpty(id){
+	emptyId = id;
+	LLYNX_Confirm("비우시겠습니까?", "emptyContactList");
+}
+
+function emptyContactList(){
+	ECMService.insertAPI("contactlists/"+emptyId+"/empty", function(result){
+		if(result.result=="S"){
+			emptyId="";
+			LLYNX_Alert("컨택리스트를 비웠습니다.(작업에 시간이 소요될 수 있습니다.)");
+			contactListSearch();
+		}else{
+			if(result.code!=null){
+				LLYNX_Alert(ECMError(result.code, result.message));
+			}else{
+				LLYNX_Alert(result.msg);
+			}
+		}
+	});
+}
+
+function pressSearchButton(){
+	$("#search").click();
+}

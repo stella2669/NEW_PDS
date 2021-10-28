@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.al.ca.ALCA01_Mapper">
+
+	<select id="getCampStaticsData" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			  DATE_FORMAT(Q.SYYYYMMDD, '%Y-%m-%d') AS SYYYYMMDD,
+			  SHOUR,
+			  CAMPAIGN_ID,
+			  CAMPAIGN_NAME,
+			  MIN(START_TIME) AS START_TIME,
+			  MAX(END_TIME) AS END_TIM,
+			  SUM(TOTAL_CONTACTS) AS TOTAL_CONTACTS,
+			  SUM(CALL_COUNT) AS CALL_COUNT,
+			  SUM(ACW_COUNT) AS ACW_COUNT,
+			  SUM(ACW_DURATION) AS ACW_DURATION,
+			  SUM(IDLE_COUNT) AS IDLE_COUNT,
+			  SUM(IDLE_DURATION) AS IDLE_DURATION,
+			  SUM(BREAK_COUNT) AS BREAK_COUNT,
+			  SUM(JOB_BREAK_DURATION) AS JOB_BREAK_DURATION,
+			  SUM(HOLD_COUNT) AS HOLD_COUNT,
+			  SUM(HOLD_DURATION) AS HOLD_DURATION,
+			  SUM(PREVIEW_ACCEPT_COUNT) AS PREVIEW_ACCEPT_COUNT,
+			  SUM(PREVIEW_REJECT_COUNT) AS PREVIEW_REJECT_COUNT,
+			  SUM(PREVIEW_DURATION) AS PREVIEW_DURATION,
+			  SUM(CONSULT_COUNT) AS CONSULT_COUNT,
+			  SUM(CONFERENCE_COUNT) AS CONFERENCE_COUNT,
+			  SUM(TRANSFER_INITATED_COUNT) AS TRANSFER_INITATED_COUNT,
+			  SUM(TRANSFER_RECEIVED_COUNT) AS TRANSFER_RECEIVED_COUNT,
+			  SUM(CALLBACK_ACCEPT_COUNT) AS CALLBACK_ACCEPT_COUNT,
+			  SUM(CALLBACK_REJECT_COUNT) AS CALLBACK_REJECT_COUNT,
+			  SUM(CALLBACK_ACCEPT_COUNT)+SUM(CALLBACK_REJECT_COUNT) AS CALLBACK_COUNT,
+			  SUM(CALLBACK_PREVIEW_DURATION) AS CALLBSCK_PREVIEW_DURATION,
+			  SUM(VOICE_ATTEMPTS) AS VOICE_ATTEMPTS,
+			  SUM(ANSWER_HUMANS) AS ANSWER_HUMANS,
+			  SUM(NUISANCE_CALLS) AS NUISANCE_CALLS,
+			  SUM(ABANDON_CALLS) AS ABANDON_CALLS,
+			  SUM(ABANDON_ON_HOLD_COUNT) AS ABANDON_ON_HOLD_COUNT,
+			  TRUNCATE(SUM(AGENT_UTILIZATION),2) AS AGENT_UTILIZATION,
+			  SUM(SERVICE_LEVEL_ACHIEVED) AS SERVICE_LEVEL_ACHIEVED,
+			  SUM(CALL_DURATION) AS CALL_DURATION,
+			  SUM(CONSULT_DURATION) AS CONSULT_DURATION,
+			  SUM(CONFERENCE_DURATION) AS CONFERENCE_DURATION
+		FROM  LL_CAMP_STATIC_01 Q
+		<where>
+		<if test="schStrtDate!=null and schStrtDate!='' and schEndDate!=null and schEndDate!=''">
+		AND   SYYYYMMDD BETWEEN #{schStrtDate} AND #{schEndDate}
+		</if>
+		<if test="schStrtDate==null or schStrtDate=='' or schEndDate==null or schEndDate==''">
+		AND   SYYYYMMDD = DATE_FORMAT(NOW(), '%Y%m%d')
+		</if>
+		<if test="schCampNm!=null and schCampNm!=''">
+		AND   CAMPAIGN_NAME LIKE CONCAT('%', #{schCampNm}, '%')
+		</if>
+		</where>
+		<if test="schby!=null and schby!=''">
+			<choose>
+			<when test='schby=="DEFAULT"'>
+			GROUP BY CAMPAIGN_ID
+			</when>
+			<when test='schby=="DATE"'>
+			GROUP BY CAMPAIGN_ID, Q.SYYYYMMDD
+			</when>
+			<when test='schby=="HOUR"'>
+			GROUP BY CAMPAIGN_ID, SYYYYMMDD, SHOUR
+			</when>
+			</choose>
+		</if>
+		<if test='schby==null or schby==""'>
+		GROUP BY CAMPAIGN_ID
+		</if>
+
+	</select>
+
+	<insert id="insertCampStaticsData" parameterType="java.util.HashMap">
+		INSERT IGNORE INTO LL_CAMP_STATIC_01 (
+			SYYYYMMDD,
+			SHOUR,
+			CAMPAIGN_ID,
+			JOB_ID,
+			CAMPAIGN_NAME,
+			START_TIME,
+			END_TIME,
+			TOTAL_CONTACTS,
+			CALL_COUNT,
+			ACW_COUNT,
+			ACW_DURATION,
+			IDLE_COUNT,
+			IDLE_DURATION,
+			BREAK_COUNT,
+			JOB_BREAK_DURATION,
+			HOLD_COUNT,
+			HOLD_DURATION,
+			PREVIEW_ACCEPT_COUNT,
+			PREVIEW_REJECT_COUNT,
+			PREVIEW_DURATION,
+			CONSULT_COUNT,
+			CONFERENCE_COUNT,
+			TRANSFER_INITATED_COUNT,
+			TRANSFER_RECEIVED_COUNT,
+			CALLBACK_ACCEPT_COUNT,
+			CALLBACK_REJECT_COUNT,
+			CALLBACK_PREVIEW_DURATION,
+			UNIQUE_CALL_ATTEMPT_COUNT,
+			VOICE_ATTEMPTS,
+			ANSWER_HUMANS,
+			NUISANCE_CALLS,
+			ABANDON_ON_HOLD_COUNT,
+			AGENT_UTILIZATION,
+			SERVICE_LEVEL_ACHIEVED,
+			CALL_DURATION,
+			CONSULT_DURATION,
+			CONFERENCE_DURATION,
+			ABANDON_CALLS,
+			ABANDON_RATE
+		) VALUES (
+			#{syyyymmdd},
+			#{shour},
+			#{campaignId},
+			#{jobId},
+			#{campaignName},
+			#{startTime},
+			#{endTime},
+			#{totalContacts},
+			#{callCount},
+			#{acwCount},
+			#{acwDuration},
+			#{idleCount},
+			#{idleDuration},
+			#{breakCount},
+			#{jobBreakDuration},
+			#{holdCount},
+			#{holdDuration},
+			#{previewAcceptCount},
+			#{previewRejectCount},
+			#{previewDuration},
+			#{consultCount},
+			#{conferenceCount},
+			#{transferInitiatedCount},
+			#{transferReceivedCount},
+			#{callbackAcceptCount},
+			#{callbackRejectCount},
+			#{callbackPreviewDuration},
+			#{uniqueCallAttemptCount},
+			#{voiceAttempts},
+			#{answerHumans},
+			#{nuisanceCalls},
+			#{abandonOnHoldCount},
+			#{agentUtilization},
+			#{serviceLevelAchieved},
+			#{callDuration},
+			#{consultDuration},
+			#{conferenceDuration},
+			#{abandonCalls},
+			#{abandonRate}
+		) ON DUPLICATE KEY UPDATE
+			CAMPAIGN_NAME = #{campaignName},
+			START_TIME = #{startTime},
+			END_TIME = #{endTime},
+			TOTAL_CONTACTS = #{totalContacts},
+			CALL_COUNT = #{callCount},
+			ACW_COUNT = #{acwCount},
+			ACW_DURATION = #{acwDuration},
+			IDLE_COUNT = #{idleCount},
+			IDLE_DURATION = #{idleDuration},
+			BREAK_COUNT = #{breakCount},
+			JOB_BREAK_DURATION = #{jobBreakDuration},
+			HOLD_COUNT = #{holdCount},
+			HOLD_DURATION = #{holdDuration},
+			PREVIEW_ACCEPT_COUNT = #{previewAcceptCount},
+			PREVIEW_REJECT_COUNT = #{previewRejectCount},
+			PREVIEW_DURATION = #{previewDuration},
+			CONSULT_COUNT = #{consultCount},
+			CONFERENCE_COUNT = #{conferenceCount},
+			TRANSFER_INITATED_COUNT = #{transferInitiatedCount},
+			TRANSFER_RECEIVED_COUNT = #{transferReceivedCount},
+			CALLBACK_ACCEPT_COUNT = #{callbackAcceptCount},
+			CALLBACK_REJECT_COUNT = #{callbackRejectCount},
+			CALLBACK_PREVIEW_DURATION = #{callbackPreviewDuration},
+			unique_call_attempt_count = #{uniqueCallAttemptCount},
+			VOICE_ATTEMPTS = #{voiceAttempts},
+			ANSWER_HUMANS = #{answerHumans},
+			NUISANCE_CALLS = #{nuisanceCalls},
+			ABANDON_ON_HOLD_COUNT = #{abandonOnHoldCount},
+			AGENT_UTILIZATION = #{agentUtilization},
+			SERVICE_LEVEL_ACHIEVED = #{serviceLevelAchieved},
+			CALL_DURATION = #{callDuration},
+			CONSULT_DURATION = #{consultDuration},
+			CONFERENCE_DURATION = #{conferenceDuration},
+			ABANDON_CALLS = #{abandonCalls},
+			ABANDON_RATE = #{abandonRate}
+	</insert>
+</mapper>

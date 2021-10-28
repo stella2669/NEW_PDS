@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	                       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    	                   http://www.springframework.org/schema/tx 
+    	                   http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+    	                   http://www.springframework.org/schema/aop 
+    	                   http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<bean id="tmTxManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="tmDataSource"/>
+	</bean>
+	<tx:advice id="tmTxAdvice" transaction-manager="tmTxManager">
+		<tx:attributes>
+		    <tx:method name="select*" read-only="true"/>
+		    <tx:method name="find*" read-only="true"/>
+		    <tx:method name="get*" read-only="true"/>
+			<tx:method name="*" propagation="REQUIRED" rollback-for="Exception" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut id="requiredTxTm" expression="execution(* com.llynx..*Service.*(..))"/> 
+		<aop:advisor advice-ref="tmTxAdvice" pointcut-ref="requiredTxTm" />
+	</aop:config>
+
+</beans>

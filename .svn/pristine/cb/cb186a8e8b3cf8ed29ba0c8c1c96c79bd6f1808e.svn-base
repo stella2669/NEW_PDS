@@ -1,0 +1,101 @@
+@charset "utf-8";
+
+#dash_board { height:100vh; display:flex; flex-direction:column; }
+
+#dash_board header { height:220px; display:flex; justify-content:space-between; align-items:center; padding:0 70px;
+    background:url(../images/inc/dash_board_bg.png) 130% 0 no-repeat, linear-gradient(to bottom, #015aff, #009bff);
+}
+#dash_board header > div { color:#fff; }
+#dash_board header .logo h1 { display:block; color:transparent; text-indent:-99999px; width:240px; height:90px; background:url(../images/inc/logo_wht.png) 0 0 no-repeat; background-size:100%; }
+#dash_board header .title h2 { display:block; font-size:90px; font-weight:700; letter-spacing:-5px; }
+#dash_board header .info { text-align:right; font-size:40px; }
+#dash_board header .info span { display:block; font-family:'Roboto', sans-serif !important; font-weight:400; }
+#dash_board header .info span.time { margin-top:5px; font-weight:400; color:#f0ff00; }
+
+#dash_board .dash_container { flex:1; background:#d9e1ee; padding:45px 70px; }
+
+.show_count { display:flex; flex-wrap:wrap; justify-content:space-between; height:50%; letter-spacing:-3px; }
+.show_count dl { width:24%; text-align:center; margin:1% 0; display:flex; flex-direction:column; border-radius:20px; overflow:hidden; }
+.show_count dl dt { height:38%; display:flex; align-items:center; justify-content:center; font-size:50px; font-weight:500; background:radial-gradient(#135dd1 40%, #084bbe); color:#fff; }
+.show_count dl dd { flex:1; display:flex; align-items:center; justify-content:center; font-size:90px; background:#fff; background:radial-gradient(#1641a0 15%, #072873); color:#57ff30; }
+.show_count dl.point dd { color:#f0ff00; }
+.show_count dl dd b { font-family:'Roboto', sans-serif !important; font-weight:700; }
+.show_count dl dd span { font-size:60px; display:none; margin-left:5px; }
+
+.show_count2 { display:flex; flex-wrap:no-wrap; justify-content:space-between; height:48%; letter-spacing:-3px; }
+.show_count2 dk { width:16%; text-align:center; margin:1% 0; display:flex; flex-direction:column; border-radius:20px; overflow:hidden; }
+.show_count2 dk dt { height:30%; display:flex; align-items:center; justify-content:center; font-size:40px; font-weight:400; background:radial-gradient(#135dd1 40%, #084bbe); color:#fff; }
+.show_count2 dk dd { flex:1; display:flex; align-items:center; justify-content:center; font-size:90px; background:#fff; background:radial-gradient(#1641a0 15%, #072873); color:#57ff30; }
+.show_count2 dk.point dd { color:#f0ff00; }
+.show_count2 dk dd b { font-family:'Roboto', sans-serif !important; font-weight:700; }
+.show_count2 dk dd span { font-size:60px; display:none; margin-left:5px; }
+
+
+/*************** responsive : start ***************/
+@media only screen and (max-width:1800px) {
+    #dash_board header { background:url(../images/inc/dash_board_bg.png) 140% 0 no-repeat, linear-gradient(to bottom, #015aff, #009bff); padding:0 60px; }
+    #dash_board .dash_container { padding:40px 60px; }
+}
+
+@media only screen and (max-width:1600px) {
+    #dash_board header { height:210px; background:url(../images/inc/dash_board_bg.png) 150% 0 no-repeat, linear-gradient(to bottom, #015aff, #009bff); }
+    #dash_board header .title h2 { font-size:80px; }
+    .show_count dl dd { font-size:80px; }
+    .show_count2 dl dd { font-size:80px; }
+}
+
+@media only screen and (max-width:1450px) {
+    #dash_board header { background:url(../images/inc/dash_board_bg.png) 165% 0 no-repeat, linear-gradient(to bottom, #015aff, #009bff); padding:0 50px; }
+    #dash_board .dash_container { padding:40px 50px; }
+    #dash_board header .title h2 { font-size:70px; }
+    .show_count dl dd { font-size:70px; }
+    .show_count2 dl dd { font-size:70px; }
+}
+@media only screen and (max-width:1300px) {
+    #dash_board header { height:200px; background:url(../images/inc/dash_board_bg.png) 186% 0 no-repeat, linear-gradient(to bottom, #015aff, #009bff); }
+    #dash_board header .logo h1 { width:186px; height:70px; }
+    #dash_board header .title h2 { font-size:65px; }
+    .show_count dl dd { font-size:65px; }
+    .show_count2 dl dd { font-size:65px; }
+}
+@media only screen and (max-width:1200px) {
+    #dash_board header { background:url(../images/inc/dash_board_bg.png) 210% 0 no-repeat, linear-gradient(to bottom, #015aff, #009bff); padding:0 40px; }
+    #dash_board .dash_container { padding:40px 40px; }
+    #dash_board header .title h2 { font-size:60px; }
+    .show_count dl dd { font-size:60px; }
+}
+@media only screen and (max-width:1130px) {
+    #dash_board header { background:none, linear-gradient(to bottom, #015aff, #009bff); }
+}
+@media only screen and (max-width:960px) {
+    #dash_board header {  padding:0 30px; }
+    #dash_board .dash_container { padding:50px 30px; }
+    #dash_board header .title h2 { font-size:55px; }
+    .show_count dl dt { font-size:40px; }
+    .show_count dl dd { font-size:55px; }
+}
+@media only screen and (max-width:820px) {
+    #dash_board header { height:220px; padding:0 20px; }
+    #dash_board .dash_container { padding:60px 20px; }
+    #dash_board header .title h2 { font-size:50px; }
+    .show_count dl dt { font-size:40px; }
+    .show_count dl dd { font-size:50px; }
+}
+@media only screen and (max-width:700px) {
+    #dash_board header { height:180px; }
+    #dash_board header .logo { display:none; }
+    #dash_board header .info { font-size:26px; }
+    #dash_board .dash_container { padding:20px 20px; }
+    #dash_board header .title h2 { font-size:40px; font-weight:500; letter-spacing:-3px; }
+    .show_count dl { width:100%; margin:2% 0; }
+    .show_count dl dt { font-size:30px; }
+    .show_count dl dd { font-size:40px; }
+}
+@media only screen and (max-width:400px) {
+    #dash_board header { display:block; height:auto; padding:20px; }
+    #dash_board header .info { font-size:18px; margin-top:5px; letter-spacing:-1px; }
+    #dash_board header .info span { display:inline-block; }
+    #dash_board header .info span.time { margin:0; margin-left:3px; }
+    #dash_board header .title h2 { font-size:30px; }
+}
+/*************** responsive : end ***************/

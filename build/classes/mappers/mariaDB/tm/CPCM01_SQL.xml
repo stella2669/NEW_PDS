@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.cp.cm.CPCM01_Mapper">
+	
+	<select id="getDataList" resultType="camelCaseResultMap">
+		SELECT
+			   DATA_ID AS ID,
+			   DATA_NM AS NM
+		FROM   LL_DATA
+		WHERE  DEL_YN='N'
+		ORDER BY DATA_ID
+	</select>
+	
+	<select id="getTotalCount" parameterType="java.util.HashMap" resultType="int">
+		SELECT
+			   COUNT(*)
+		FROM   LL_CAMP
+		<where>
+		<if test="schStrtDate!='' and schStrtDate!=null and schEndDate!='' and schEndDate!=null">
+		AND    START_DATE <![CDATA[<=]]> #{schEndDate}
+		AND    END_DATE <![CDATA[>=]]> #{schStrtDate}
+		</if>
+		<if test="schCampNm!='' and schCampNm!=null">
+		AND    CAMP_NM LIKE CONCAT('%', #{schCampNm}, '%')
+		</if>
+		<if test="schCampTemp!='' and schCampTemp!=null">
+		AND    TEMP_ID = #{schCampTemp}
+		</if>
+		</where>	   
+	</select>
+	
+ 	<!-- 캠페인 리스트 -->
+	<select id="getCampList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			   ROW_NUMBER() OVER(ORDER BY CRT_DATE DESC) AS RN_IDX,
+			   CAMP_ID,
+			   CAMP_NM,
+			   TOT_CNT,
+			   TEMP_ID,
+			   TEMP_NM,
+			   DATE_FORMAT(STR_TO_DATE(START_DATE, '%Y%m%d'), '%Y-%m-%d') AS START_DATE,
+			   DATE_FORMAT(STR_TO_DATE(END_DATE, '%Y%m%d'), '%Y-%m-%d') AS END_DATE,
+			   CAMP_TYPE,
+			   (SELECT COM_SNM FROM LL_SCODE WHERE COM_LCD='CA000' AND COM_SCD = CP.CAMP_TYPE) AS CAMP_TYPE_NM,
+			   DNC_CD,
+			   DATA_ID,
+			   STORAGE_CYCLE,
+			   RUNNING_STATE,
+			   (SELECT COM_SNM FROM LL_SCODE WHERE COM_LCD='CS000' AND COM_SCD = CP.RUNNING_STATE) AS RUNNING_STATE_NM,
+			   BIGO,
+			   0 AS PRO_CNT
+		FROM   LL_CAMP CP
+		<where>
+		<if test="schStrtDate!='' and schStrtDate!=null and schEndDate!='' and schEndDate!=null">
+		AND    START_DATE <![CDATA[<=]]> #{schEndDate}
+		AND    END_DATE <![CDATA[>=]]> #{schStrtDate}
+		</if>
+		<if test="schCampNm!='' and schCampNm!=null">
+		AND    CAMP_NM LIKE CONCAT('%', #{schCampNm}, '%')
+		</if>
+		<if test="schCampTemp!='' and schCampTemp!=null">
+		AND    TEMP_ID = #{schCampTemp}
+		</if>
+		</where>		
+		<if test="pageSize!=null and pageSize!=''">
+			<include refid="com.llynx.modules.common.Common_Mapper.pageLimit"/>
+		</if>	   
+ 	</select>
+ 	
+ 	<!-- 캠페인 저장 -->
+ 	<insert id="insertCamp" parameterType="java.util.HashMap" useGeneratedKeys="true" keyProperty="campId">
+        INSERT INTO LL_CAMP (
+	        CAMP_ID,
+			CAMP_NM,
+			TEMP_ID,
+			TEMP_NM,
+			CAMP_TYPE,
+			DNC_CD,
+			START_DATE,
+			END_DATE,
+			DATA_ID,
+			TOT_CNT,
+			STORAGE_CYCLE,
+			RUNNING_STATE,
+			BIGO,
+			CRT_EMP_NO,
+			CRT_DATE
+        ) VALUES (
+			CONCAT(#{userId}, DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')),
+		    #{campNm},
+		    #{campTemp}, <!-- 임시 템플릿정보 -->
+		    (SELECT COM_SNM FROM LL_SCODE WHERE COM_LCD='CT000' AND COM_SCD = #{campTemp}), <!-- 임시 템플릿정보 -->
+		    #{campType},
+		    #{dncCd},
+		    #{startDate},
+		    #{endDate},
+		    #{dataId},
+		    #{totCnt},
+		    #{storageCycle},
+		    '1000', <!-- 캠페인 임시 상태(대기 : 1000) -->
+		    #{bigo},
+		    #{userId},
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+        )
+	</insert>
+
+	<!-- 캠페인 수정 -->
+	<update id="updateCamp" parameterType="java.util.HashMap">
+		UPDATE LL_CAMP 
+		SET    CAMP_NM = #{campNm}, 
+			   TEMP_ID = #{campTemp},
+			   TEMP_NM = (SELECT COM_SNM FROM LL_SCODE WHERE COM_LCD='CT000' AND COM_SCD = #{campTemp}),
+			   CAMP_TYPE = #{campType},
+			   DNC_CD = #{dncCd},
+			   START_DATE = #{startDate},
+			   END_DATE = #{endDate},
+			   DATA_ID = #{dataId},
+			   TOT_CNT = ((SELECT TOT_CNT FROM LL_CAMP WHERE CAMP_ID=#{campId})+#{totCnt}),
+			   STORAGE_CYCLE = #{storageCycle},
+			   BIGO = #{bigo},
+		   	   UPT_EMP_NO = #{userId},	
+		   	   UPT_DATE = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+	    WHERE  CAMP_ID = #{campId}
+	</update>	
+
+	<!-- 캠페인 삭제 -->
+	<delete id="deleteCamp" parameterType="java.util.HashMap">
+		DELETE FROM LL_CAMP			
+	    WHERE  CAMP_ID = #{campId}
+	</delete>
+	
+	<select id="getSearchCust" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT 
+			   DATA_ID,
+			   CUST_ID,
+			   CUSTDATA03 AS PHONE_NUM <!-- 전화번호 임시데이터 -->
+		FROM   LL_CUST_DATA
+		WHERE  DATA_ID = #{dataId}
+		<!-- 나이조건값이 있을 때 -->
+		<if test="condition01!=null and condition01!=''">
+		<if test='condition01.equals("1000")'>
+		AND    (YEAR(CURDATE())-SUBSTR(CUSTDATA06, 1, 4)+1) <![CDATA[<=]]> 19
+		</if>
+		<if test='condition01.equals("6000")'>
+		AND    (YEAR(CURDATE())-SUBSTR(CUSTDATA06, 1, 4)+1) <![CDATA[>=]]> 60
+		</if>
+		<if test='!condition01.equals("1000") and !condition01.equals("6000")'>
+		AND    (YEAR(CURDATE())-SUBSTR(CUSTDATA06, 1, 4)+1) BETWEEN (#{condition01}/100) AND ((#{condition01}/100)+9)  
+		</if> 		 
+		</if>		
+		<!-- 성별조건값이 있을 때 -->
+		<if test="condition02!=null and condition02!=''">		
+		AND    CUSTDATA05 = #{condition02}
+		</if>		
+		<!-- 지역조건값이 있을 때(예시데이터 없음) -->
+		<if test="condition03!=null and condition03!=''">
+		AND    (CUSTDATA08 LIKE CONCAT('%', (SELECT COM_SNM FROM LL_SCODE WHERE COM_LCD='AR000' AND COM_SCD = #{condition03}), '%') OR
+		        CUSTDATA08 LIKE CONCAT('%', (SELECT BIGO FROM LL_SCODE WHERE COM_LCD='AR000' AND COM_SCD = #{condition03}), '%'))		        
+		</if>
+	</select>
+	
+	<insert id="insertCampCust" parameterType="java.util.HashMap">
+		INSERT INTO LL_CAMP_DATA 
+		(
+		 	CAMP_ID,
+		 	DATA_ID,
+		 	CUST_ID,
+		 	PHONE_NO,
+		 	PRO_STATCD,
+		 	TRY_CNT
+		) 
+		VALUES 
+		<foreach collection="list" item="i" separator=",">
+		(
+			#{campId},
+			#{i.dataId},			
+			#{i.custId},
+			#{i.phoneNum},
+			'1000',
+			0
+		)
+		</foreach>
+		ON DUPLICATE KEY 
+		UPDATE CAMP_ID = VALUES(CAMP_ID),
+			   DATA_ID = VALUES(DATA_ID),
+			   CUST_ID = VALUES(CUST_ID),
+			   PHONE_NO = VALUES(PHONE_NO)
+	</insert>					
+</mapper>

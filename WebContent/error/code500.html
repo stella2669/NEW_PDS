@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>error - 500</title>
+
+		<style>
+		/*****reset*****/
+		* { box-sizing:border-box;  }
+		html { overflow-x: hidden; background:#fff!important; }
+
+		html, body, div, span, object, iframe,
+		h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+		abbr, address, cite, code,
+		del, dfn, em, img, ins, kbd, q, samp,
+		small, strong, sub, sup, var,
+		b, i,
+		dl, dt, dd, ol, ul, li,
+		fieldset, form, label, legend,
+		table, caption, tbody, tfoot, thead, tr, th, td,
+		article, aside, canvas, details, figcaption, figure,
+		footer, header, hgroup, menu, nav, section, summary,
+		time, mark, audio, video {
+		    margin: 0;
+		    padding: 0;
+		    border: 0;
+		    outline: 0;
+		    font-size: 100%;
+		    vertical-align: middle;
+		    background: transparent;
+		}
+
+		/*HTML5 display-role reset for older browsers*/
+		article,aside,details,figcaption,figure,
+		footer,header,hgroup,menu,nav,section {
+			display: block;
+		}
+		/*//HTML5 display-role reset for older browsers*/
+
+		body {
+		    height: 100%;
+
+		    color: #555;
+		    line-height: 1;
+		    word-break: keep-all;
+		    /*뷰표트 변환시 폰트크기 자동확대 방지*/
+		    -webkit-text-size-adjust: 100%;
+		    letter-spacing: -0.5px;
+		}
+
+		strong, b { font-weight:700;/*bold*/ }
+
+		a { color:#111; text-decoration:none; background:transparent; }
+		a:hover, a:active, a:focus, a:visited { text-decoration: none; }
+
+		img {
+		  border: none;
+		  max-width: 100%;
+		  display: block;
+		}
+
+		input, select {
+		    padding: 0;
+		    margin: 0;
+		    line-height: 1;
+		    border: 1px solid #111;
+		    vertical-align: middle;
+		    background-color: transparent;
+		    outline-style: none;
+		}
+		input[type='button'], input[type='radio'], input[type='checkbox'] { cursor: pointer; }
+
+		button {
+		    padding: 0;
+		    margin: 0;
+		    line-height: 1;
+		    border: none;
+		    background-color: transparent;
+		    cursor: pointer;
+		    outline-style: none;
+		}
+		button::-moz-focus-inner { padding:0; border:0; }
+
+		table { border-collapse:collapse!important; border-spacing:0; }
+		col { display: table-column; }
+		nav ul, ul, dl, ol { list-style:none; }
+		textarea{ resize:none; }
+		hr, legend, caption { display:none; }
+		br { display:block;}
+
+		address, caption, cite, code, dfn, em, var, i, em, address { font-style:normal;  }
+		blockquote, q { quotes:none; }
+		blockquote:before, blockquote:after, q:before, q:after { content:''; content:none; }
+
+		/*아이폰 계열 버튼 스타일*/
+		input[type='text'], input[type='password'], input[type='submit'], input[type='search'] {
+		    appearance: none;
+		    -webkit-appearance: none;
+		    -moz-appearance: none;
+		    border-radius: 0;
+		}
+		button, input[type='button'], input[type='submit'], input[type='reset'], input[type='file'] {
+		    appearance: button;
+		    -webkit-appearance: button;
+		    -moz-appearance: button;
+		}
+		input[type='search']::-webkit-search-cancel-button {
+		    appearance: none;
+		    -webkit-appearance: none;
+		    -moz-appearance: none;
+		}
+		/*****reset*****/
+
+		/*************** error : start ***************/
+		.error_wrap { display:flex; justify-content:center; align-items:center; margin-top:200px; }
+		.error { text-align:center; }
+		.error .error_header { }
+		.error .error_header h1 { display:block; font-size:100px; color:#000; font-family:'Roboto', sans-serif !important; font-weight:bold; line-height:1.2; color:#ea494b; letter-spacing:-2px; }
+		.error .error_body { border-top:1px solid #000; border-bottom:1px solid #000; text-align:center; padding:42px 40px; min-width:600px; max-width:800px; margin-top:15px;
+		 font-family:'Noto Sans KR', sans-serif !important; }
+		.error .error_body h2 { display:block; font-size:20px; color:#000; letter-spacing:-1px; font-weight:400; margin-bottom:12px; font-weight:bold; }
+		.error .error_body > div { font-size:16px; letter-spacing:-1px; color:#777; line-height:1.35; font-weight:normal; }
+		.error .error_footer { margin-top:80px; }
+		.error .error_footer .btn { width:260px; height:50px; font-size:20px; background:#2b4877; color:#fff; }
+		.error .error_footer .btn:hover { background:#1c355d; }
+		.error .error_footer .btn.on { background:#1c355d; }
+		/*************** error : end ***************/
+		</style>
+	</head>
+	<body>
+		<div class="error_wrap">
+			<div class="error">
+
+				<div class="error_header">
+					<h1>500 ERROR</h1>
+				</div>
+
+				<div class="error_body">
+					<h2>죄송합니다. 페이지가 작동하지 않습니다.</h2>
+					<div>
+						HTTP 500 Internal Server error<br>
+						내부 서버 오류, 찾고 있는 리소스에 문제가 있어 표시할 수 없습니다.<br>
+						현재 페이지에서 요청을 처리할 수 없습니다.
+					</div>
+				</div>
+
+				<div class="error_footer">
+				<!-- 	<button type="button" class="btn" onclick="close();">닫기</button>  -->
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			function close() {
+				try {
+					parent.popupClose();
+				} catch (e) {
+					self.close();
+				}
+			}
+		</script>
+	</body>
+</html>

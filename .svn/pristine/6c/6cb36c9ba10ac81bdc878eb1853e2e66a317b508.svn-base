@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.cu.at.CUAT01_Mapper">
+	
+ 	<!-- 특성 리스트 -->
+	<select id="getAttrList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			ATTR_LIST_SEQ
+			,ATTR_NM
+			,ISUSE
+			,CRT_DATE
+			,CRT_EMP_NO
+			,UPT_DATE
+			,UPT_EMP_NO
+		FROM LL_ATTR_LIST
+ 	</select>	
+ 	
+ 	<!-- 특성 목록 -->
+	<select id="getAttrInfoList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			ATTRINFO_ID
+			,ATTR_LIST_SEQ
+			,ATTRINFO_NM
+			,ATTRINFO_TYPE
+			,(SELECT COM_SNM FROM LL_SCODE WHERE COM_LCD='CUA00' AND COM_SCD = CP.ATTRINFO_TYPE) AS ATTRINFO_TYPE_NM
+			,IS_KEY
+			,SORT_NO
+			,IS_MASK
+			,BIGO
+			,CRT_DATE
+			,CRT_EMP_NO
+			,UPT_DATE
+			,UPT_EMP_NO
+		FROM LL_ATTRINFO CP
+		WHERE
+			ATTR_LIST_SEQ  = #{attrListSeq}
+			ORDER BY SORT_NO ASC
+ 	</select>	
+ 	
+ 	<!-- 특성리스트 저장 -->
+ 	<insert id="insertAttrlist" parameterType="java.util.HashMap">
+        INSERT INTO LL_ATTR_LIST (
+	        ATTR_NM,
+			ISUSE,
+			CRT_EMP_NO,
+			CRT_DATE	        
+        ) VALUES (
+			#{attrNm},
+		    #{isUse},
+		    #{userId},
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+        )
+	</insert>
+	
+	<!-- 특성목록 저장 -->
+ 	<insert id="insertAttrInfo" parameterType="java.util.HashMap">
+        INSERT INTO LL_ATTRINFO (
+	        ATTR_LIST_SEQ,
+			ATTRINFO_NM,
+			ATTRINFO_TYPE,
+			IS_KEY,
+			IS_MASK,
+			SORT_NO,
+			BIGO,
+			CRT_EMP_NO,
+			CRT_DATE	        
+        ) VALUES (
+			#{attrListSeq},
+		    #{attrinfoNm},
+		    #{attrinfoType},
+		    #{isKey},
+		    #{isMask},
+		    #{sortNo},
+		    #{bigo},
+		    #{userId},
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+        )
+	</insert>
+	
+	<!-- 특성리스트 수정 -->
+	<update id="updateAttrlist" parameterType="java.util.HashMap">
+		UPDATE LL_ATTR_LIST 
+		SET    ATTR_NM = #{attrNm},
+		   	   ISUSE = #{isUse},
+		   	   UPT_EMP_NO = #{userId},	
+		   	   UPT_DATE = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')			
+	    WHERE  ATTR_LIST_SEQ = #{attrListSeq}
+	</update>
+	
+	<!-- 특성목록 수정 -->
+	<update id="updateAttrInfo" parameterType="java.util.HashMap">
+		UPDATE LL_ATTRINFO 
+		SET    ATTRINFO_NM = #{attrinfoNm},
+		   	   ATTRINFO_TYPE = #{attrinfoType},
+		   	   IS_KEY = #{isKey},
+		   	   IS_MASK = #{isMask},
+		   	   SORT_NO = #{sortNo},
+		   	   BIGO = #{bigo},
+		   	   UPT_EMP_NO = #{userId},	
+		   	   UPT_DATE = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')			
+	    WHERE  ATTRINFO_ID = #{attrinfoId}
+	</update>
+	
+	<!-- 특성리스트 삭제 -->
+	<delete id="deleteAttrlist" parameterType="java.util.HashMap">
+		DELETE FROM LL_ATTR_LIST 	
+		WHERE  ATTR_LIST_SEQ = #{attrListSeq}
+	</delete> 
+	
+	<!-- 특성리스트 삭제 -->
+	<delete id="deleteAttrInfo" parameterType="java.util.HashMap">
+		DELETE FROM LL_ATTRINFO 	
+		WHERE  ATTRINFO_ID = #{attrinfoId}
+	</delete> 	
+ 					
+</mapper>

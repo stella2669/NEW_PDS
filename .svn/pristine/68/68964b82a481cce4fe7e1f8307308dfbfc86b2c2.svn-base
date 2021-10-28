@@ -1,0 +1,74 @@
+/**
+ * 컨택리스트 연결특성 조회
+ */
+
+var loginInfo = _getLoginInfo();
+
+var attrInfoList = [];
+var attrNmList = [];
+
+
+var attrColModel = [
+	{label:"특성ID", name:"id", align:"center", width:20},
+	{label:"특성명", name:"contactPropertyName", formatter : setcontactPropertyName01,align:"left", width:70},
+	{label:"특성 유형", name:"attributeType", formatter : setAttrType ,align:"center", width:50},
+	{label:"데이터 유형", name:"dataType", align:"center", width:50}
+]
+
+
+var attrGrid = new webticsGrid();
+
+$(document).ready(function(){
+	attrGrid.id("attrGrid");
+	attrGrid.colModel(attrColModel);
+	attrGrid.rowNum(1000);
+	attrGrid.call();
+	/*if(selectedContactListId!=""&&selectedContactListId!="undefined"){
+		ECMService.getAPI("contactlists/"+selectedContactListId,function(result){
+			if(result.result=="S"){
+				$("#contactNm").text(result.name);
+			}else{
+				if(result.code!=null){
+					LLYNX_Alert(ECMError(result.code, result.message), "close");
+				}else{
+					LLYNX_Alert(result.msg, "close");
+				}
+			}
+		});
+	}else{
+		LLYNX_Alert("선택된 컨택리스트 정보가 없습니다.\n다시 시도해주세요.", 'function', 'thisPopupClose')
+	}*/
+	setLinkedAttrList();
+});
+
+function setLinkedAttrList(){
+	ECMService.getAPI("contactlists/"+selectedContactListId+"/attributes", JSON.stringify({contactlistId: selectedContactListId}), function(result){
+		/*for(var i=0;i<result.contents.length;i++){
+			for(var j=0;j<attrNmList.length;j++){
+				if(result.contents[i].name==attrNmList[j])
+					$("#attrSelect").jqxListBox("selectIndex", j);
+			}
+		}*/
+		if(result.result=="S"){
+			attrGrid.setECMGrid(result);
+		}else{
+			if(result.code!=null){
+				LLYNX_Alert(ECMError(result.code, result.message));
+			}else{
+				LLYNX_Alert(result.msg)
+			}
+		}
+	});
+}
+
+function setAttrListSelect(){
+	ECMService.getAPI("attributes", JSON.stringify({cuurentPage:1, pageSize:1000}), function(result){
+		if(result.result=="S"){
+
+		}
+	});
+}
+
+$(".popup_close").click(function(){
+	parent.popupClose();
+});

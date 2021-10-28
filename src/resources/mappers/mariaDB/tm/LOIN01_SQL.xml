@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.lo.in.LOIN01_Mapper">
+<!--
+    파일 : 로그인 쿼리
+	설명 : 로그인 화면에서 사용하는 쿼리
+
+	수정일         수정자              수정내용
+	==========   =========   ================================
+	2021-04-16   ybLee        최초 생성
+-->
+
+	<select id="findUser" parameterType="java.util.HashMap" resultType="sessionVO">
+		SELECT
+			  USER_ID AS userId,
+		      PASSWORD AS password,
+		      USER_NM AS userNm,
+		      RESET_YN,
+		      GROUP_CD AS groupCd,
+		      AUTH_CD AS authCd
+		FROM  LL_USER
+	    WHERE USER_ID = #{userId}
+	</select>
+
+	<insert id="insertLogin" parameterType="java.util.HashMap">
+		INSERT   INTO ll_loginhistory
+		(
+		 	syyyymmdd,
+		 	emp_no,
+		 	login_ip,
+		 	login_date,
+		 	crt_date,
+		 	crt_emp_no
+		)
+		VALUES
+		(
+			DATE_FORMAT(NOW(), '%Y%m%d'),
+			#{empNo},
+			#{loginIp},
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+		    DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+			#{empNo}
+		)
+		ON DUPLICATE KEY
+		UPDATE login_ip = #{loginIp},
+			   upt_date = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+			   upt_emp_No = #{empNo}
+	</insert>
+</mapper>

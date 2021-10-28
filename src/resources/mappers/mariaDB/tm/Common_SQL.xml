@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.common.Common_Mapper">
+
+	<sql id="pageHeader">
+    	SELECT Q.*
+      	FROM (
+      		SELECT ROW_NUMBER() OVER() AS RN_IDX, data.*
+            FROM (
+    </sql>
+
+    <sql id="pageFooter">
+        	) data
+    	) Q
+    </sql>
+
+    <sql id="pageLimit">
+       	LIMIT ${firstRowIndex-1}, ${pageSize}
+    </sql>
+
+    <select id="getAuthList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			   AUTH_CD AS CD,
+			   AUTH_NM AS NM
+		FROM   LL_AUTH_CODE
+		WHERE  USE_YN = 'Y'
+		ORDER BY AUTH_CD
+	</select>
+
+    <select id="getComCdList" parameterType="String" resultType="camelCaseResultMap">
+		SELECT
+			   COM_SCD AS CD,
+			   COM_SNM AS NM,
+			   BIGO
+		FROM   LL_SCODE
+		WHERE  COM_LCD = #{comLcd}
+		AND    USE_YN = 'Y'
+		ORDER BY SORT
+	</select>
+
+	<select id="getGroupList" resultType="camelCaseResultMap">
+		SELECT
+			   COM_SCD AS CD,
+			   COM_SNM AS NM
+		FROM   LL_SCODE
+		WHERE  COM_LCD = 'GR000'
+		AND    USE_YN = 'Y'
+		ORDER BY SORT
+	</select>
+
+	<select id="getProgCdList" resultType="camelCaseResultMap">
+		SELECT
+			   PROG.PROG_CD,
+			   PROG.PROG_NM,
+			   PROG.MENU_CD,
+			   SCD.COM_SNM AS MENU_NM,
+			   PROG.USE_YN,
+			   PROG.CALL_URL,
+			   PROG.SORT
+		FROM   LL_PROG_CODE PROG,
+			   LL_SCODE SCD
+		WHERE  PROG.MENU_CD = SCD.COM_SCD
+		AND    SCD.COM_LCD = 'ME000'
+		AND    SCD.USE_YN = 'Y'
+		ORDER BY PROG.SORT
+ 	</select>
+
+ 	<select id="getEmpList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+ 		SELECT
+ 			  EMP.USER_ID,
+ 			  EMP.USER_NM,
+ 			  CONCAT(EMP.USER_NM,'(',EMP.USER_ID,')') AS EMP_INFO,
+ 			  EMP.GROUP_CD,
+ 			  GRU.COM_SNM AS GROUP_NM
+ 		FROM  LL_USER EMP,
+ 		      LL_SCODE GRU
+ 		WHERE EMP.GROUP_CD = GRU.COM_SCD
+ 		AND   GRU.COM_LCD = 'GR000'
+ 		AND   GRU.USE_YN = 'Y'
+ 		<if test="groupCd!=null and groupCd!=''">
+ 		AND   EMP.GROUP_CD = #{groupCd}
+ 		</if>
+ 		<if test="orderBy=='groupNm'">
+ 			<if test="sortBy=='asc'">
+ 				ORDER BY GRU.COM_SNM ASC
+ 			</if>
+ 			<if test="sortBy=='desc'">
+ 				ORDER BY GRU.COM_SNM DESC
+ 			</if>
+ 		</if>
+ 		<if test="orderBy=='userId'">
+ 			<if test="sortBy=='asc'">
+ 				ORDER BY EMP.USER_ID ASC
+ 			</if>
+ 			<if test="sortBy=='desc'">
+ 				ORDER BY EMP.USER_ID DESC
+ 			</if>
+ 		</if>
+ 		<if test="orderBy=='userNm'">
+ 			<if test="sortBy=='asc'">
+ 				ORDER BY EMP.USER_NM ASC
+ 			</if>
+ 			<if test="sortBy=='desc'">
+ 				ORDER BY EMP.USER_NM DESC
+ 			</if>
+ 		</if>
+ 	</select>
+
+	<select id="getCompleteCodes" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			ID,
+ 			NAME,
+ 			(CASE WHEN KR_NAME IS NOT NULL THEN KR_NAME ELSE NAME END) AS KR_NAME,
+ 			COMPLETIONCODETYPE,
+ 			USE_YN,
+ 			STATICS_YN,
+ 			(CASE COMPLETIONCODETYPE WHEN 'System' THEN KR_NAME ELSE DESCRIPTION END) AS DESCRIPTION,
+ 			RPC,
+ 			SUCCESS,
+ 			CLOSURE,
+ 			EXCLUDEFROMNUISANCERATE,
+ 			DATE_FORMAT(STR_TO_DATE(UPT_DATE, '%Y%m%d%H%i%s'), '%Y-%m-%d %H:%i:%s') AS UPT_DATE
+  		FROM LL_POM_COMP_CD
+  		<where>
+  		<if test="schType!=null and schType!=''">
+  		COMPLETIONCODETYPE = #{schType}
+  		</if>
+  		</where>
+	</select>
+
+	<delete id="deleteCompCodes" parameterType="java.util.HashMap">
+		DELETE FROM LL_POM_COMP_CD
+		WHERE ID = #{id}
+	</delete>
+
+ 	<insert id="syncPomCompleteCodes" parameterType="java.util.HashMap">
+ 		INSERT INTO LL_POM_COMP_CD (
+ 			ID,
+ 			NAME,
+ 			COMPLETIONCODETYPE,
+ 			USE_YN,
+ 			DESCRIPTION,
+ 			RPC,
+ 			SUCCESS,
+ 			CLOSURE,
+ 			EXCLUDEFROMNUISANCERATE,
+ 			CRT_DATE,
+ 			CRT_EMP_NO
+ 		) VALUES (
+ 			#{id},
+ 			#{name},
+ 			#{completioncodeType},
+ 			'Y',
+ 			#{description},
+ 			#{rpc},
+ 			#{success},
+ 			#{closure},
+ 			#{excludeFromNuisanceRate},
+ 			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+ 			#{userId}
+ 		) ON DUPLICATE KEY UPDATE
+ 			NAME = #{name},
+ 			COMPLETIONCODETYPE = #{completioncodeType},
+ 			DESCRIPTION = #{description},
+ 			RPC = #{rpc},
+ 			SUCCESS = #{success},
+ 			CLOSURE = #{closure},
+ 			EXCLUDEFROMNUISANCERATE = #{excludeFromNuisanceRate},
+ 			UPT_DATE = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+ 			UPT_EMP_NO = #{userId}
+ 	</insert>
+
+	<insert id="compCodeTempInsert" parameterType="java.util.HashMap">
+		INSERT INTO LL_POM_COMP_CD (
+ 			ID,
+ 			NAME,
+ 			COMPLETIONCODETYPE,
+ 			USE_YN,
+ 			STATICS_YN,
+ 			DESCRIPTION,
+ 			CRT_DATE,
+ 			CRT_EMP_NO
+ 		) VALUES (
+ 			#{id},
+ 			#{name},
+ 			'Custom',
+ 			'Y',
+ 			#{staticsYn},
+ 			#{description},
+ 			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+ 			#{userId}
+ 		)
+	</insert>
+
+	<update id="updateStaticsYnCode" parameterType="java.util.HashMap">
+		UPDATE LL_POM_COMP_CD
+		SET STATICS_YN = #{staticsYn}
+		WHERE ID = #{id}
+	</update>
+</mapper>

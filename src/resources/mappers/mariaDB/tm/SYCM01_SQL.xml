@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.sy.cm.SYCM01_Mapper">
+
+	<select id="dupCheckLcd" parameterType="java.util.HashMap" resultType="boolean">
+		SELECT
+			   IF(COUNT(COM_LCD)=0, 0, 1)
+		FROM   LL_LCODE
+		WHERE  COM_LCD = #{chComLcd}
+	</select>
+
+	<select id="dupCheckScd" parameterType="java.util.HashMap" resultType="boolean">
+		SELECT
+			   IF(COUNT(COM_SCD)=0, 0, 1)
+		FROM   LL_SCODE
+		WHERE  COM_LCD = #{comLcd}
+		AND    COM_SCD = #{chComScd}
+	</select>
+
+	<select id="getComLcdList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			    COM_LCD,
+			    COM_LNM,
+			    REQ_YN,
+			    USE_YN,
+			    BIGO,
+			    SORT
+	      FROM  LL_LCODE
+	      WHERE 1=1
+	      <if test="schComLnm!=null and schComLnm!=''">
+	      AND COM_LNM LIKE CONCAT('%',#{schComLnm},'%')
+	      </if>
+	      ORDER BY COM_LCD
+ 	</select>
+
+	<select id="getComScdList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+			SELECT
+				   COM_LCD,
+	               COM_SCD,
+	               COM_SNM,
+	               USE_YN,
+	               BIGO,
+	               SORT
+	         FROM  LL_SCODE
+             WHERE COM_LCD = #{comLcd}
+     		 ORDER BY SORT, COM_SCD
+ 	</select>
+
+ 	<insert id="insertLcd" parameterType="java.util.HashMap" >
+       INSERT INTO LL_LCODE /*공통_코드_정보*/ (
+            COM_LCD,
+            COM_LNM,
+            REQ_YN,
+            USE_YN,
+            BIGO,
+            CRT_USER_ID,
+            CRT_DATE
+        ) VALUES (
+			#{comLcd},
+		    #{comLnm},
+		    #{reqYn},
+		    #{useYn},
+		    #{note},
+		    #{userId},
+		    DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+        )
+	</insert>
+
+	<update id="updateLcd" parameterType="java.util.HashMap">
+		UPDATE LL_LCODE
+		SET    COM_LCD = #{chComLcd},
+			   COM_LNM = #{comLnm},
+			   REQ_YN = #{reqYn},
+		   	   USE_YN = #{useYn},
+		   	   BIGO = #{note},
+		   	   UPT_USER_ID = #{userId},
+		   	   UPT_DATE = DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+	    WHERE  COM_LCD = #{comLcd}
+	</update>
+
+	<delete id="deleteLcd" parameterType="java.util.HashMap">
+		DELETE FROM LL_LCODE
+		WHERE  COM_LCD = #{comLcd}
+	</delete>
+
+	 <insert id="insertScd" parameterType="java.util.HashMap" >
+       INSERT INTO LL_SCODE (
+            COM_LCD,
+            COM_SCD,
+            COM_SNM,
+            USE_YN,
+            BIGO,
+            SORT,
+            CRT_USER_ID,
+            CRT_DATE
+        ) VALUES (
+			#{comLcd},
+		    #{comScd},
+		    #{comSnm},
+		    #{useYn},
+		    #{note},
+		    #{sort},
+		    #{userId},
+		    DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+        )
+	</insert>
+
+	<update id="updateScd" parameterType="java.util.HashMap">
+		UPDATE LL_SCODE
+		SET    COM_SCD = #{chComScd},
+			   COM_SNM = #{comSnm},
+		   	   USE_YN = #{useYn},
+		   	   BIGO = #{note},
+		   	   SORT = #{sort},
+		   	   UPT_USER_ID = #{userId},
+		   	   UPT_DATE = DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')
+	    WHERE  COM_LCD = #{comLcd}
+		AND    COM_SCD = #{comScd}
+	</update>
+
+	<delete id="deleteScd" parameterType="java.util.HashMap">
+		DELETE FROM LL_SCODE
+		WHERE  COM_LCD = #{comLcd}
+		AND    COM_SCD = #{comScd}
+	</delete>
+
+</mapper>

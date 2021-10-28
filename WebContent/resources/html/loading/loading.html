@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" >
+<link rel="stylesheet" href="../../css/import.css">
+<script src="../../js/libs/jquery-3.2.0.min.js"></script>
+<script src="../../js/libs/jquery-ui.js"></script>
+<script src="../../js/libs/design.js"></script><!-- 임시 스크립트 -->
+<title>guide</title>
+</head>
+
+<body>
+
+
+
+
+<!-- loading : start -->
+<div class="loading" style="display:block;">
+	<div>
+		<span class="loading_progress">
+			<i class="lp_1"></i>
+			<i class="lp_2"></i>
+			<i class="lp_3"></i>
+		</span>
+		<p style="font-size:18px">처리중입니다. 잠시만 기다리세요.</p>
+	</div>
+</div>
+<!-- loading : end -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- popup : start -->
+<div class="popup_window">
+	<div class="popup_header">
+		<h1>예약콜 조회</h1>
+		<button type="button" class="popup_close"><i class="xi-close"></i><span class="replace_text">팝업닫기</span></button>
+	</div>
+	<div class="popup_content">
+		<!-- popup_body : start -->
+		<div class="popup_body">
+			<!-- search : start -->
+			<div class="search_A2">
+				<div class="sc_input">
+					<dl>
+						<dt>처리구분</dt>
+						<dd>
+							<select class="select_type01" title="처리구분 선택">
+								<option value="">전체</option>
+							</select>
+						</dd>
+					</dl>
+				</div>
+				<div class="button mr_10">
+					<button type="button" class="btn btn_third btn_size_s">
+						<i class="xi-search"></i>조회
+					</button>
+				</div>
+			</div>
+			<!-- search : end -->
+			<!-- title : start -->
+			<div class="title">
+				<h2 class="title_3nd">예약콜 목록</h2>
+			</div>
+			<!-- title : end -->
+			<!-- table : start -->
+			<div class="board_A0_L a_c type_grid" style="height:500px;">
+				<table aria-describedby="table_summary">
+					<caption id="table_summary">예약콜 목록</caption>
+					<colgroup>
+						<col style="width:80px">
+						<col style="width:100px">
+						<col style="width:50px">
+						<col style="width:auto">
+						<col style="width:80px">
+						<col style="width:130px">
+						<col style="width:auto">
+						<col style="width:auto">
+					</colgroup>
+					<thead>
+						<tr class="bd_top">
+							<th scope="col">번호</th>
+							<th scope="col">예약일자</th>
+							<th scope="col">예약시간</th>
+							<th scope="col">고객번호</th>
+							<th scope="col">고객명</th>
+							<th scope="col">전화번호</th>
+							<th scope="col">상세내용</th>
+							<th scope="col">처리여부</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td colspan="8" class="a_c no_data">검색된 데이터가 없습니다.</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- table : end -->
+		</div>
+		<!-- popup_body : end -->
+		<!-- popup_footer : start -->
+		<div class="popup_footer">
+			<div class="button a_r">
+				<button type="button" class="btn btn_third btn_size_n popup_close">
+					<i class="xi-close"></i>닫기
+				</button>
+			</div>
+		</div>
+		<!-- popup_footer : end -->
+	</div>
+</div>
+<!-- popup : end -->
+
+
+</body>
+</html>

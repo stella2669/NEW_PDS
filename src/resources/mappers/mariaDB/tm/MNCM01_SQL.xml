@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.mn.cm.MNCM01_Mapper">
+	<select id="getCampMonList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			   CAMP_ID,
+			   CAMP_NM,
+			   CAMP_STAT,
+			   READY_CNT+ESH_CNT+AFTWORK_CNT+NOTREADY_CNT AS LOGIN_CNT,
+			   READY_CNT,
+			   READY_TOTAL_TIME,
+			   READY_AVR_TIME,
+			   ESH_CNT,
+			   ESH_TOTAL_TIME,
+			   ESH_AVR_TIME,
+			   NOTREADY_CNT,
+			   NOTREADY_TOTAL_TIME,
+			   NOTREADY_AVR_TIME,
+			   AFTWORK_CNT,
+			   AFTWORK_TOTAL_TIME,
+			   AFTWORK_AVR_TIME,
+			   TOTAL_CALLLIST,
+			   TRY_CNT,
+			   CON_CNT,
+			   COM_CNT,
+			   ADON_CNT,
+			   TRY_RATE,
+			   COM_RATE,
+			   ADON_RATE
+		FROM   LL_MONICAMP
+		WHERE  SYYYYMMDD = DATE_FORMAT(NOW(), '%Y%m%d')
+		<if test="schCampNm!='' and schCampNm!=null">
+		AND    CAMP_NM LIKE CONCAT('%', #{schCampNm}, '%')
+		</if>
+		<if test="schCampStat!='' and schCampStat!=null">
+		AND    CAMP_STAT = #{schCampStat}
+		</if>
+		ORDER BY CAMP_ID
+	</select>
+
+	<select id="getCampAgentMnData" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			IFNULL(SUM(T.BUSY_CNT), 0) AS BUSY_CNT,
+			IFNULL(SUM(T.LOGGED_OUT_CNT), 0) AS LOGGED_OUT_CNT,
+			IFNULL(SUM(T.NOT_READY_CNT), 0) AS NOT_READY_CNT,
+			IFNULL(SUM(T.READY_CNT), 0) AS READY_CNT,
+			IFNULL(SUM(T.WORK_NOT_READY_CNT), 0) AS WORK_NOT_READY_CNT,
+			IFNULL(SUM(T.LOGGED_IN_CNT), 0) AS LOGGED_IN_CNT
+		FROM (SELECT
+				CASE WHEN AGENTSTATE='BUSY' THEN COUNT(AGENTSTATE) ELSE 0 END AS BUSY_CNT,
+				CASE WHEN AGENTSTATE='LOGGED_OUT' THEN COUNT(AGENTSTATE) ELSE 0 END AS LOGGED_OUT_CNT,
+				CASE WHEN AGENTSTATE='NOT_READY' THEN COUNT(AGENTSTATE) ELSE 0 END AS NOT_READY_CNT,
+				CASE WHEN AGENTSTATE='READY' THEN COUNT(AGENTSTATE) ELSE 0 END AS READY_CNT,
+				CASE WHEN AGENTSTATE='WORK_NOT_READY' THEN COUNT(AGENTSTATE) ELSE 0 END AS WORK_NOT_READY_CNT,
+				CASE WHEN AGENTSTATE='LOGGED_IN' THEN COUNT(AGENTSTATE) ELSE 0 END AS LOGGED_IN_CNT
+			FROM LL_AGENTEVENT
+			WHERE
+				SYYYYMMDD = DATE_FORMAT(NOW(), '%Y%m%d')
+			AND
+				CURRENTCAMPAIGNNAME = #{campNm}
+			GROUP BY AGENTSTATE) T
+	</select>
+
+	<insert id="refreshMonData" parameterType="java.util.HashMap">
+		INSERT INTO LL_MONICAMP (
+			CAMP_ID,
+			SYYYYMMDD,
+			CAMP_NM,
+			CAMP_STAT,
+			READY_CNT,
+			READY_TOTAL_TIME,
+			READY_AVR_TIME,
+			ESH_CNT,
+			ESH_TOTAL_TIME,
+			ESH_AVR_TIME,
+			NOTREADY_CNT,
+			NOTREADY_TOTAL_TIME,
+			NOTREADY_AVR_TIME,
+			AFTWORK_CNT,
+			AFTWORK_TOTAL_TIME,
+			AFTWORK_AVR_TIME,
+			TOTAL_CALLLIST,
+			TRY_CNT,
+			UNIQUE_TRY_CNT,
+			CON_CNT,
+			COM_CNT,
+			ADON_CNT,
+			ADON_HOLD_CNT,
+			TRY_RATE,
+			UNIQUE_TRY_RATE,
+			COM_RATE,
+			ADON_RATE,
+			ESTIMATED_JOB_END_TIME,
+			PREVIEW_ACCEPT_COUNT,
+			PREVIEW_REJECT_COUNT,
+			PREVIEW_DURATION,
+			CONSULT_COUNT,
+			CONSULT_DURATION,
+			CONFERENCE_COUNT,
+			CONFERENCE_DURATION,
+			TRANSFER_INITIATED_COUNT,
+			TRANSFER_RECEIVED_COUNT,
+			CALLBACK_ACCEPT_COUNT,
+			CALLBACK_REJECT_COUNT,
+			CALLBACK_PREVIEW_DURATION,
+			HOLD_IN_CONFERENCE_COUNT,
+			HOLD_IN_CONFERENCE_DURATION,
+			CRT_DATE,
+			CRT_EMP_NO
+		) VALUES (
+			#{campId},
+			DATE_FORMAT(NOW(), '%Y%m%d'),
+			#{campNm},
+			#{campStat},
+			#{readyCnt},
+			#{readyTotalTime},
+			#{readyAvrTime},
+			#{eshCnt},
+			#{eshTotalTime},
+			#{eshAvrTime},
+			#{notreadyCnt},
+			#{notreadyTotalTime},
+			#{notreadyAvrTime},
+			#{aftworkCnt},
+			#{aftworkTotalTime},
+			#{aftworkAvrTime},
+			#{totalCalllist},
+			#{tryCnt},
+			#{uniqueTryCnt},
+			#{conCnt},
+			#{comCnt},
+			#{adonCnt},
+			#{adonHoldCnt},
+			#{tryRate},
+			#{uniqueTryRate},
+			#{comRate},
+			#{adonRate},
+			#{estimatedJobEndTime},
+			#{previewAcceptCount},
+			#{previewRejectCount},
+			#{previewDuration},
+			#{consultCount},
+			#{consultDuration},
+			#{conferenceCount},
+			#{conferenceDuration},
+			#{transferInitiatedCount},
+			#{transferReceivedCount},
+			#{callbackAcceptCount},
+			#{callbackRejectCount},
+			#{callbackPreviewDuration},
+			#{holdInConferenceCount},
+			#{holdInConferenceDuration},
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+			'batch'
+		) ON DUPLICATE KEY UPDATE
+			CAMP_NM = #{campNm},
+			CAMP_STAT = #{campStat},
+			READY_CNT = #{readyCnt},
+			READY_TOTAL_TIME = #{readyTotalTime},
+			READY_AVR_TIME = #{readyAvrTime},
+			ESH_CNT = #{eshCnt},
+			ESH_TOTAL_TIME = #{eshTotalTime},
+			ESH_AVR_TIME = #{eshAvrTime},
+			NOTREADY_CNT = #{notreadyCnt},
+			NOTREADY_TOTAL_TIME = #{notreadyTotalTime},
+			NOTREADY_AVR_TIME = #{notreadyAvrTime},
+			AFTWORK_CNT = #{aftworkCnt},
+			AFTWORK_TOTAL_TIME = #{aftworkTotalTime},
+			AFTWORK_AVR_TIME = #{aftworkAvrTime},
+			TOTAL_CALLLIST = #{totalCalllist},
+			TRY_CNT = #{tryCnt},
+			UNIQUE_TRY_CNT = #{uniqueTryCnt},
+			CON_CNT = #{conCnt},
+			COM_CNT = #{comCnt},
+			ADON_CNT = #{adonCnt},
+			ADON_HOLD_CNT = #{adonHoldCnt},
+			TRY_RATE = #{tryRate},
+			UNIQUE_TRY_RATE = #{uniqueTryRate},
+			COM_RATE = #{comRate},
+			ADON_RATE = #{adonRate},
+			ESTIMATED_JOB_END_TIME = #{estimatedJobEndTime},
+			PREVIEW_ACCEPT_COUNT = #{previewAcceptCount},
+			PREVIEW_REJECT_COUNT = #{previewRejectCount},
+			PREVIEW_DURATION = #{previewDuration},
+			CONSULT_COUNT = #{consultCount},
+			CONSULT_DURATION = #{consultDuration},
+			CONFERENCE_COUNT = #{conferenceCount},
+			CONFERENCE_DURATION = #{conferenceDuration},
+			TRANSFER_INITIATED_COUNT = #{transferInitiatedCount},
+			TRANSFER_RECEIVED_COUNT = #{transferReceivedCount},
+			CALLBACK_ACCEPT_COUNT = #{callbackAcceptCount},
+			CALLBACK_REJECT_COUNT = #{callbackRejectCount},
+			CALLBACK_PREVIEW_DURATION = #{callbackPreviewDuration},
+			HOLD_IN_CONFERENCE_COUNT = #{holdInConferenceCount},
+			HOLD_IN_CONFERENCE_DURATION = #{holdInConferenceDuration},
+			UPT_DATE = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+			UPT_EMP_NO = 'batch'
+	</insert>
+</mapper>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.cu.nc.CUNC01_Mapper">
+	
+	<select id="getTotalCount" parameterType="java.util.HashMap" resultType="int">
+		SELECT
+			   COUNT(*)
+		FROM   LL_DNC DNC
+		<where>
+		<if test="schDncCd!='' and schDncCd!=null">
+		AND    DNC_CD = #{schDncCd}
+		</if>
+		<if test="schCustNm!='' and schCustNm!=null">
+		AND    CUST_NM = #{schCustNm}
+		</if>
+		<if test="schPhoneNum!='' and schPhoneNum!=null">
+		AND    PHONE_NUM = #{schPhoneNum}
+		</if>
+		</where>	   
+	</select>
+	
+ 	<!-- DNC 리스트 -->
+	<select id="getDncList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			   ROW_NUMBER() OVER(ORDER BY CRT_DATE DESC) AS RN_IDX,
+			   DNC_CD,
+			   (SELECT COM_SNM FROM LL_SCODE WHERE COM_LCD='NC000' AND COM_SCD=DNC.DNC_CD) AS DNC_CD_NM,
+			   PHONE_NUM,
+			   CUST_NM,
+			   SA_CD,
+			   (SELECT COM_SNM FROM LL_SCODE WHERE COM_LCD='SA000' AND COM_SCD=DNC.SA_CD) AS SA_CD_NM,
+			   BIGO,
+			   DATE_FORMAT(STR_TO_DATE(SUBSTR(CRT_DATE, 1, 8), '%Y%m%d'), '%Y-%m-%d') AS CRT_DATE
+		FROM   LL_DNC DNC
+		<where>
+		<if test="schDncCd!='' and schDncCd!=null">
+		AND    DNC_CD = #{schDncCd}
+		</if>
+		<if test="schCustNm!='' and schCustNm!=null">
+		AND    CUST_NM = #{schCustNm}
+		</if>
+		<if test="schPhoneNum!='' and schPhoneNum!=null">
+		AND    PHONE_NUM = #{schPhoneNum}
+		</if>
+		</where>		
+		<if test="pageSize!=null and pageSize!=''">
+			<include refid="com.llynx.modules.common.Common_Mapper.pageLimit"/>
+		</if>	   
+ 	</select>	
+ 	
+ 	<!-- DNC 중복체크 -->
+ 	<select id="dupCheckDnc" parameterType="java.util.HashMap" resultType="boolean">
+ 		SELECT 
+ 			   IF(COUNT(*)=0, 0, 1) 
+ 		FROM   LL_DNC
+ 		WHERE  PHONE_NUM = #{chPhoneNum}
+ 		AND    DNC_CD = #{chDncCd} 			   
+ 	</select>
+ 	
+ 	
+ 	<!-- DNC 저장 -->
+ 	<insert id="insertDnc" parameterType="java.util.HashMap">
+        INSERT INTO LL_DNC (
+	        DNC_CD,
+			CUST_NM,
+			PHONE_NUM,
+			SA_CD,
+			BIGO,
+			CRT_USER_ID,
+			CRT_DATE	        
+        ) VALUES (
+			#{dncCd},
+		    #{custNm},
+		    #{phoneNum},
+		    #{saCd},
+		    #{bigo},
+		    #{userId},
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+        )
+	</insert>
+
+	<!-- DNC 수정 -->
+	<update id="updateDnc" parameterType="java.util.HashMap">
+		UPDATE LL_DNC 
+		SET    DNC_CD = #{chDncCd},
+		   	   CUST_NM = #{custNm},		
+		   	   PHONE_NUM = #{chPhoneNum},
+		   	   SA_CD = #{saCd},
+		   	   BIGO = #{bigo},
+		   	   UPT_USER_ID = #{userId},	
+		   	   UPT_DATE = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')			
+	    WHERE  AUTHDNC_CD_CD = #{dncCd}
+	    AND    PHONE_NUM = #{phoneNum}
+	</update>	
+
+	<!-- DNC 삭제 -->
+	<delete id="deleteDnc" parameterType="java.util.HashMap">
+		DELETE FROM LL_AUTH_CODE 	
+		WHERE  AUTHDNC_CD_CD = #{dncCd}
+	    AND    PHONE_NUM = #{phoneNum}
+	</delete> 					
+</mapper>

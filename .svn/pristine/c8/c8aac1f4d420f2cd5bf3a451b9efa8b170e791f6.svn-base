@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.cu.co.CUCO01_Mapper">
+	
+ 	<!-- 컨택 리스트 -->
+	<select id="getContactList" parameterType="java.util.HashMap" resultType="camelCaseResultMap">
+		SELECT
+			ATTR_LIST_SEQ
+			,ATTR_NM
+			,ISUSE
+			,CRT_DATE
+			,CRT_EMP_NO
+			,UPT_DATE
+			,UPT_EMP_NO
+		FROM LL_CONTACTINFO
+ 	</select>	
+ 	
+ 	
+ 	<!-- 컨택 리스트 저장 -->
+ 	<insert id="insertContactlist" parameterType="java.util.HashMap">
+        INSERT INTO LL_CONTACTINFO (
+	        CONTACT_NM,
+			IS_USE,
+			BIGO,
+			JOB_STATE,
+			CRT_USER_ID,
+			CRT_DATE	        
+        ) VALUES (
+			#{contactNm},
+		    #{isUse},
+		    #{bigo},
+		    #{jobState},
+		    #{userId},
+			DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+        )
+	</insert>
+	
+ 					
+</mapper>

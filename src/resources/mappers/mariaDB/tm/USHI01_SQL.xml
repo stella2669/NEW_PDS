@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.llynx.modules.us.hi.USHI01_Mapper">
+
+
+ 	<select id="getAgtLogOut" parameterType="java.util.HashMap"  resultType="camelCaseResultMap">
+	 	SELECT
+			A.USER_ID
+			,A.USER_NM
+			,B.LOGIN_DATE
+			,DATE_FORMAT(B.LOGIN_DATE,'%Y-%m-%d %H:%i:%s') AS TLOGIN_DATE
+			,B.LOGOUT_DATE
+			,DATE_FORMAT(B.LOGOUT_DATE,'%Y-%m-%d %H:%i:%s') AS TLOGOUT_DATE
+			,DATE_FORMAT(B.SYYYYMMDD,'%Y-%m-%d') AS SYYYYMMDD
+			,B.login_ip
+		FROM LL_USER A
+			,LL_LOGINHISTORY B
+		WHERE
+			A.USER_ID=B.EMP_NO
+			AND B.SYYYYMMDD BETWEEN #{schStrtDate} AND #{schEndDate}
+			<if test="srchUserId!='' and srchUserId!=null">
+				AND    A.USER_ID = #{srchUserId}
+			</if>
+			<if test="srchUsernm !='' and srchUsernm !=null">
+				AND    A.USER_NM = #{srchUsernm}
+			</if>
+
+ 		<if test="orderBy=='schDate'">
+ 			<if test="sortBy=='asc'">
+ 				ORDER BY B.SYYYYMMDD ASC
+ 			</if>
+ 			<if test="sortBy=='desc'">
+ 				ORDER BY B.SYYYYMMDD DESC
+ 			</if>
+ 		</if>
+ 		<if test="orderBy=='userId'">
+ 			<if test="sortBy=='asc'">
+ 				ORDER BY A.USER_ID ASC
+ 			</if>
+ 			<if test="sortBy=='desc'">
+ 				ORDER BY A.USER_ID DESC
+ 			</if>
+ 		</if>
+ 		<if test="orderBy=='userNm'">
+ 			<if test="sortBy=='asc'">
+ 				ORDER BY A.USER_NM ASC
+ 			</if>
+ 			<if test="sortBy=='desc'">
+ 				ORDER BY A.USER_NM DESC
+ 			</if>
+ 		</if>
+ 	</select>
+
+
+</mapper>

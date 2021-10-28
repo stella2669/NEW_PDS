@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" href="../../css/import.css">
+<script src="../../js/libs/jquery-3.2.0.min.js"></script>
+<script src="../../js/libs/jquery-ui.js"></script>
+<script src="../../js/libs/design.js"></script><!-- 임시 스크립트 -->
+<title>error</title>
+</head>
+
+<body>
+	<div class="error_wrap">
+		<div class="error">
+
+			<div class="error_header">
+				<h1>ERROR</h1>
+			</div>
+
+			<div class="error_body">
+				<h2>죄송합니다.  예기치 못한 문제로 에러가 발생 했습니다.</h2>
+				<div>
+					구체적인 에러의 원인은 시스템개발팀에 보고가 되었으며,<br>
+					현재 처리중에 있습니다. 불편함을 드려 죄송합니다.
+				</div>
+			</div>
+
+			<div class="error_footer">
+				<button type="button" class="btn btn_third">
+					<i class="xi-close"></i>닫기
+				</button>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>
